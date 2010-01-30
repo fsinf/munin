@@ -1,0 +1,73 @@
+#!/bin/sh
+
+# Magic markers (optional - only used by munin-config and some
+# installation scripts):
+#
+#%# family=auto
+#%# capabilities=autoconf
+
+# If run with the "autoconf"-parameter, give our opinion on wether we
+# should be run on this system or not. This is optinal, and only used by
+# munin-config. In the case of this plugin, we should most probably
+# always be included.
+
+if [ "$1" = "autoconf" ]; then
+	echo yes
+	exit 0
+fi
+
+# If run with the "config"-parameter, give out information on how the
+# graphs should look. 
+ 
+if [ "$1" = "config" ]; then
+	# The host name this plugin is for. (Can be overridden to have
+	# one machine answer for several)
+
+	# The title of the graph
+	# Arguments to "rrdtool graph". In this case, tell it that the
+	# lower limit of the graph is '0', and that 1k=1000 (not 1024)
+	# The Y-axis label
+	# We want Cur/Min/Avg/Max unscaled (i.e. 0.42 load instead of
+	# 420 milliload)
+	# Graph category. Defaults to 'other'
+	echo 'graph_category sensors
+graph_title Fan speeds in % of maximum
+graph_args --base 1000 -l 0 --lower-limit 0 --upper-limit 100
+graph_vlabel %
+graph_scale no
+graph_info Monitor fan-speed'
+	
+	# the data for the forms:
+	for fan in $fans; do
+		eval label=\$${fan}_label
+		if [ -z "$label" ]; then
+			label=$fan
+		fi
+		echo "$fan.label $label"
+
+		# there might be some info for a fan
+		eval info=\$${fan}_info
+		if [ -n "$info" ]; then
+			echo "$fan.info $info"
+		fi
+
+		# get warning and critical parameter
+		echo "$fan.warning 5:50
+$fan.critical 0:100"
+	done
+
+	# Last, if run with the "config"-parameter, quit here (don't
+	# display any data)
+	exit 0
+fi
+
+# If not run with any parameters at all (or only unknown ones), do the
+# real work - i.e. display the data. Almost always this will be
+# "value" subfield for every data field.
+output=$(hpasmcli -s 'show fans' | head -n -2 | tail -n +4)
+for fan in $fans; do
+	fanstring=$(echo $fan | sed 's/_/ /g')
+	absNumber=$(echo $fan | sed 's/.*\(.\)$/\1/')
+	echo -n "$fan.value "
+	echo $output | sed "s/.*#$absNumber *[^ ]* [^ ]* *[^ ]* *\([^ ]*\)%.*/\1/"
+done

@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# Magic markers (optional - only used by munin-config and some
+# installation scripts):
+#
+# Author: Mathias Ertl <mati@fsinf.at>
+#
+#%# family=auto
+#%# capabilities=autoconf
+
+# If run with the "autoconf"-parameter, give our opinion on wether we
+# should be run on this system or not. This is optinal, and only used by
+# munin-config. In the case of this plugin, we should most probably
+# always be included.
+
+if [ "$1" = "autoconf" ]; then
+	echo yes
+	exit 0
+fi
+
+# If run with the "config"-parameter, give out information on how the
+# graphs should look. 
+ 
+if [ "$1" = "config" ]; then
+	# The host name this plugin is for. (Can be overridden to have
+	# one machine answer for several)
+
+	# The title of the graph
+	# Arguments to "rrdtool graph". In this case, tell it that the
+	# lower limit of the graph is '0', and that 1k=1000 (not 1024)
+	# The Y-axis label
+	# We want Cur/Min/Avg/Max unscaled (i.e. 0.42 load instead of
+	# 420 milliload)
+	# Graph category. Defaults to 'other'
+	echo 'graph_category sensors
+graph_title Power supply units
+graph_args --base 1000 -l 0 --lower-limit 0 --upper-limit 1
+graph_vlabel available
+graph_scale no
+graph_info Shows availability of power supply units'
+	
+	# the data for the forms:
+	echo 'psu1.label 1st PSU
+psu1.info Power supply unit no. 1
+psu1.warning 0.9:1.1
+psu1.critical 0.9:1.1
+psu2.label 2nd PSU
+psu2.info Power supply unit no. 2
+psu2.warning 0.9:1.1
+psu2.critical 0.9:1.1'
+
+	# Last, if run with the "config"-parameter, quit here (don't
+	# display any data)
+	exit 0
+fi
+
+# If not run with any parameters at all (or only unknown ones), do the
+# real work - i.e. display the data. Almost always this will be
+# "value" subfield for every data field.
+output=$(hpasmcli -s 'show powersupply' | grep "Condition")
+echo -n "psu1.value "
+value=$(echo $output | sed 's/Condition: \([A-Za-z]*\).*/\1/')
+
+if [ "$value" == "Ok" ]; then
+	echo 1;
+elif [ "$value" == "FAILED" ]; then
+	echo 0;
+else
+	echo -1
+fi
+
+echo -n "psu2.value "
+value=$(echo $output | sed 's/Condition:.*Condition: \([A-Za-z]*\).*/\1/')
+if [ "$value" == "Ok" ]; then
+	echo 1
+elif [ "$value" == "FAILED" ]; then
+	echo 0
+else
+	echo -1
+fi
