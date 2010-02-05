@@ -2,10 +2,26 @@
 # 
 # Plugin to count the connections on an ejabberd server
 #
-# INFO: needs ejabberd 1.1.2
+# INFO: needs ejabberd 2.1.0 or newer
 #
-# Author: Christian Dröge <Christian@draugr.de>
-# 	(modified by Mathias Ertl <mati@fsinf.at>)
+# Configuration:
+#
+# Only supported config-string is vhosts, which you can set if you want to
+# monitor how many users are online by vhost. Example
+# 
+# 	[ejabberd]
+# 	env.vhosts fsinf.at jabber.fsinf.at
+#
+# Author: Mathias Ertl <mati@fsinf.at>
+#	(original version by Christian Dröge <Christian@draugr.de>)
+#
+# changes since the original version
+#
+# 2010-05-02:
+# * support multiple vhosts with the vhosts setting
+#
+# befor next entry:
+# * adapted to ejabberd 2.1.0
 #
 #%# family=auto
 #%# capabilities=autoconf
@@ -57,6 +73,18 @@ graph_info This graph shows a statistic of ejabberd
 s2s_connections_out.info Number of outgoing server to server connections
 s2s_connections_in.info Number of incoming server to server connections
 connected_users.info Number of logged in users'
+	
+	if [ -n "$vhosts" ]; then
+		. /usr/share/munin/plugins/plugin.sh
+		for vhost in $vhosts; do
+			field=${vhost}_connected
+			field="$(clean_fieldname "$vhost")"
+			field_label="connected users - $vhost"
+			field_info="Number of logged in users on $vhost"
+			echo "$field.label $field_label"
+			echo "$field.info $field_info"
+		done
+	fi
 
 	exit 0
 fi
@@ -78,3 +106,13 @@ echo -n "s2s_connections_in.value "
 $ejabberdctl $params incoming-s2s-number
 echo -n "connected_users.value "
 $ejabberdctl $params connected-users-number
+
+if [ -n "$vhosts" ]; then
+	. /usr/share/munin/plugins/plugin.sh
+	for vhost in $vhosts; do
+		field=${vhost}_connected
+		field="$(clean_fieldname "$vhost")"
+		echo -n "$field.value "
+		$ejabberdctl $params stats_host onlineusers $vhost
+	done
+fi
