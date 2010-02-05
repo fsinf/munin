@@ -82,15 +82,14 @@ if [ -n "$node" ]; then
 fi
 
 total=0
+
 # get total users: BUGFIX, see: https://support.process-one.net/browse/EJAB-914
-#echo -n "total.value "
-#$ejabberdctl $params stats registeredusers
+echo -n "total.value "
+$ejabberdctl $params stats registeredusers
 
 # get users for vhosts:
 for i in $vhosts; do
 	name=$(echo $i | sed 's/\./_/g')
-	value=$($ejabberdctl $params vhost $i stats registeredusers)
+	value=$($ejabberdctl $params stats_host registeredusers $i)
 	echo "vhost_$name.value $value"
-	total=$(($total+$value))
 done
-echo "total.value $total"

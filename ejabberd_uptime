@@ -36,7 +36,7 @@ graph_category ejabberd'
 	exit 0
 fi
 
-uptime=$(ejabberdctl stats uptime-seconds)
+uptime=$(ejabberdctl stats uptimeseconds)
 value=$(echo $uptime'/86400' | bc -l)
 alignedValue=$( printf '%.4f' $value )
 echo uptime.value $alignedValue
