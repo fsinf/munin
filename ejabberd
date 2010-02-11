@@ -78,7 +78,7 @@ connected_users.info Number of logged in users'
 		. /usr/share/munin/plugins/plugin.sh
 		for vhost in $vhosts; do
 			field=${vhost}_connected
-			field="$(clean_fieldname "$vhost")"
+			field="$(clean_fieldname "$field")"
 			field_label="connected users - $vhost"
 			field_info="Number of logged in users on $vhost"
 			echo "$field.label $field_label"
@@ -111,7 +111,7 @@ if [ -n "$vhosts" ]; then
 	. /usr/share/munin/plugins/plugin.sh
 	for vhost in $vhosts; do
 		field=${vhost}_connected
-		field="$(clean_fieldname "$vhost")"
+		field="$(clean_fieldname "$field")"
 		echo -n "$field.value "
 		$ejabberdctl $params stats_host onlineusers $vhost
 	done
