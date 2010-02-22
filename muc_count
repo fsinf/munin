@@ -3,12 +3,20 @@
 # Plugin to measure uptime of an ejabberd-node using ejabberdctl.
 # This is more or less based on the uptime-plugin shipping with munin.
 #
+# Configuration:
+#
+# [muc_count]
+# user ejabberd
+# group ejabberd
+# env.host example.com
+#
+# The host variable names the parameter passed to ejabberdctl
+#
 # Contributed by Mathias Ertl <mati@fsinf.at>
 #
 # $Log$
 # Revision 1.0  2008/12/22 17:58:39  mati
 # Added inital version
-#
 #
 # Magic markers
 #
@@ -35,4 +43,4 @@ graph_category MUC'
 	exit 0
 fi
 
-echo no.value $(ejabberdctl muc-online-rooms | wc -l)
+echo no.value $(ejabberdctl muc-online-rooms $host| wc -l)
