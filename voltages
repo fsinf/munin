@@ -28,7 +28,7 @@ if len( sys.argv ) > 1 and sys.argv[1] == 'autoconf':
 def sanitize_name( string ):
 	for regexp in [ '^[^A-Za-z_]', '[^A-Za-z0-9_]' ]:
 		string = re.compile( regexp ).sub( '_', string )
-	return string[-19:]
+	return string
 
 config = False
 if len( sys.argv ) > 1 and sys.argv[1] == 'config':
@@ -66,8 +66,8 @@ for line in stdout.split( "\n" ):
 		chip = line
 		continue
 
-	if line.find( ' V' ) == -1:
-		"""Not a temperature"""
+	if line.find( ' V ' ) == -1:
+		"""Not a voltage"""
 		continue
 
 	label, rest = line.split(':', 1)
