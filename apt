@@ -108,7 +108,7 @@ if ($ARGV[0] and $ARGV[0] eq "config")
 
         print "graph_title Pending packages\n";
         print "pending.label pending\n";
-        print "pending.critical 0\n";
+        print "pending.critical :0 \n";
         print "hold.label hold\n";
         exit 0;
 }
