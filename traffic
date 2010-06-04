@@ -1,0 +1,58 @@
+#!/bin/bash
+
+if [[ -z "$ip" ]]; then
+	ip="4"
+fi
+
+if [[ "$ip" -eq "4" ]]; then
+	bin=iptables
+elif [[ "$ip" -eq "6" ]]; then
+	bin=ip6tables
+else
+	echo "Error: env.ip must be either 4 or 6"
+fi
+
+if [[ "$1" == "config" ]]; then
+	echo "graph_title Traffic over IPv$ip
+graph_vlabel bytes/s
+graph_category network
+graph_args -l 0"
+	stack=0
+	for port in $ports; do
+		name="port_${port}"
+		echo "${name}_in.label ${port} (incoming)
+${name}_in.type DERIVE
+${name}_out.label ${port} (outgoing)
+${name}_out.type DERIVE
+${name}_total.label ${port} (total)
+${name}_total.type DERIVE"
+#		if [[ "$stack" -eq "1" ]]; then
+#			echo "${name}.draw STACK"
+#		fi
+		stack=1
+	done
+
+#	echo "total.label Total
+#total.type DERIVE
+#total.graph no"
+	
+	exit
+fi
+
+iptables=$(which $bin)
+if [[ -z "$chain_in" ]]; then
+	chain_in="counter_in"
+fi
+if [[ -z "$chain_out" ]]; then
+	chain_out="counter_out"
+fi
+
+for port in $ports; do
+	value_in=$($iptables -L $chain_in -n -v -x | grep "tcp dpt:${port} *$" | awk '{print $2}')
+	echo port_${port}_in.value ${value_in}
+	value_out=$($iptables -L $chain_out -n -v -x | grep "tcp spt:${port} *$" | awk '{print $2}')
+	echo port_${port}_out.value ${value_out}
+
+	value_total=$((value_in+value_out))
+	echo port_${port}_total.value ${value_total}
+done
