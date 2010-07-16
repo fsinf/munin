@@ -24,7 +24,7 @@
 #%# capabilities=autoconf
 
 MAXLABEL=20
-MAXNAME=15
+MAXNAME=30
 excluded_fs="-x none -x unknown -x udf -x iso9660 -x romfs -x ramfs -x proc -x sysfs -x tmpfs -x udev"
 
 if [ "$1" = "autoconf" ]; then
