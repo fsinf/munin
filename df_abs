@@ -23,7 +23,7 @@
 #%# family=manual
 #%# capabilities=autoconf
 
-MAXLABEL=20
+MAXLABEL=25
 MAXNAME=30
 excluded_fs="-x none -x unknown -x udf -x iso9660 -x romfs -x ramfs -x proc -x sysfs -x tmpfs -x udev"
 
