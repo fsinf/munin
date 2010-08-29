@@ -1,13 +1,41 @@
 #!/bin/sh
 #
-# Script to monitor absolute disk usage.
+# Script to monitor absolute disk usage. The script is forked from the one shipped with
+# some munin 1.2.x version because it continously showed some useless
+# filesystems. This version is extended so it can exclude certain filesystems
+# or devices.
 #
 # Parameters understood:
 #
 # 	config   (required)
 # 	autoconf (optional - used by munin-config)
 #
+# Configuration:
+#
+# This script supports two environment variables:
+#	EXCLUDE_FS	- Exclude given filesystems
+#			  (default: iso9660, udf and none.)
+#	EXCLUDE_DEVS	- Exclude filesystems on given devices. This is useful
+#			  to exclude pseudo filesystems like /dev or /proc.
+#			  (default: "none" - which excludes most pseudo
+#				filesystems.)
+# Note that setting any of these settings *overrides* the default values and
+# does NOT *add* to them.
+#
+# Example configuration:
+#
+# The following example excludes XFS and JFS filesystems and any filesystems
+# with device "none" or "/scratch":
+#
+# [df]
+# env.EXCLUDE_FS=xfs jfs
+# env.EXCLUDE_DEVS=none /scratch
+#
 # $Log$
+#
+# Revision 2.0
+# Added EXLCUDE_FS and EXCLUDE_TYPE paramaters
+#
 # Revision 1.2.2.1  2005/02/16 22:50:14  jimmyo
 # linux/df* now ignores bind mounts.
 #
@@ -20,25 +48,33 @@
 # Magic markers (optional - used by munin-config and installation
 # scripts):
 #
-#%# family=manual
+#%# family=auto
 #%# capabilities=autoconf
-
-MAXLABEL=25
-MAXNAME=30
-excluded_fs="-x none -x unknown -x udf -x iso9660 -x romfs -x ramfs -x proc -x sysfs -x tmpfs -x udev -x devtmpfs"
 
 if [ "$1" = "autoconf" ]; then
 	echo yes
 	exit 0
 fi
 
+[ -z $EXCLUDE_DEVS ] && EXCLUDE_DEVS="none"
+[ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none"
+DF_PARAMS='-T -P -l'
+for fs in $EXCLUDE_FS; do
+	DF_PARAMS="$DF_PARAMS -x $fs"
+done
+
 clean_name() {
-    echo $1 | sed 's/[\/.-]/_/g; s/^_dev\(_mapper\)\?_//'| awk "{ 
-	if (length(\$1) > $MAXNAME)
-		print substr(\$1, length(\$1)-$MAXNAME+1)
+	echo $1 | sed 's/[\/.-]/_/g'
+}
+
+# Determine if a device should be excluded or not. Return 1 (true) if the device
+# name is listed in EXCLUDE_DEVS, 0 (false) otherwise.
+exclude_dev() {
+	if [ "$(echo $EXCLUDE_DEVS | grep -c $1)" -eq "1" ]; then
+		return 1
 	else
-		print \$1
-	}"
+		return 0
+	fi
 }
 
 if [ "$1" = "config" ]; then
@@ -48,26 +84,33 @@ if [ "$1" = "config" ]; then
 	echo 'graph_vlabel bytes'
 	echo 'graph_category disk'
 	echo 'graph_total Total'
-	df -P -l $excluded_fs | sed 1d | grep -v "//" | while read i; do
+	df $DF_PARAMS | sed 1d | while read i; do
+		exclude_dev $i
+		if [ "$?" -eq "1" ]; then
+			continue
+		fi
+
 		name=`clean_name $i`
 		echo -n "$name.label "
 		echo $i | awk "{ 
-			dir=\$6
-			if (length(dir) <= $MAXLABEL)
-				print dir
-			else
-				printf (\"...%s\n\", substr (dir, length(dir)-$MAXLABEL+4, $MAXLABEL-3)) 
+			print \$7
+			print \"$name.info \" \$7 \" (\" \$2 \") -> \" \$1;
 		}"
 		echo "$name.cdef $name,1024,*"
-		size=`echo $i | awk '{print $2}'`
+		size=`echo $i | awk '{print $3}'`
 		echo "$name.warning $((size / 100 * 92))"
 		echo "$name.critical $((size / 100 * 98))"
 	done
 	exit 0
 fi
 
-df -P -l $excluded_fs | sed 1d | grep -v "//" | while read i; do
+df $DF_PARAMS | sed 1d | while read i; do
+	exclude_dev $i
+	if [ "$?" -eq "1" ]; then
+		continue
+	fi
+
 	name=`clean_name $i`
 	echo -n "$name.value "
-	echo $i | awk '{ print $3 }'
+	echo $i | awk '{ print $4 }'
 done
