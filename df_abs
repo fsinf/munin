@@ -25,7 +25,7 @@
 
 MAXLABEL=25
 MAXNAME=30
-excluded_fs="-x none -x unknown -x udf -x iso9660 -x romfs -x ramfs -x proc -x sysfs -x tmpfs -x udev"
+excluded_fs="-x none -x unknown -x udf -x iso9660 -x romfs -x ramfs -x proc -x sysfs -x tmpfs -x udev -x devtmpfs"
 
 if [ "$1" = "autoconf" ]; then
 	echo yes
