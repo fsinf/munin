@@ -200,7 +200,7 @@ graph_args -l 0"""%(title) )
 		if use_udp:
 			print_traffic_config( ports, 'udp', 'ipv4', v4_chains )
 
-	if use_v4 and use_v6 and len( ports ) > 1:
+	if use_v4 and use_v6:
 		print( 'total_ipv4.label Total traffic via IPv4' )
 		print( 'total_ipv4.type DERIVE' )
 		print( 'total_ipv4.min 0' )
@@ -234,7 +234,7 @@ if use_v4:
 		v4_total += print_traffic( ports, 'udp', 'ipv4', v4_chains )
 
 
-if use_v4 and use_v6 and len( ports ) > 1:
+if use_v4 and use_v6:
 	print( 'total_ipv4.value %s'%v4_total )
 	print( 'total_ipv6.value %s'%v6_total )
 
