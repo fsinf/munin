@@ -128,11 +128,10 @@ def parse_tables( binary ):
 
 v6_total = 0
 v4_total = 0
-in_total = 0
-out_total = 0
 
 def print_traffic( ports, protocol, ip_version, chains ):
-	printed_traffic = 0
+	in_total = 0
+	out_total = 0
 	in_chain = chains.pop( 'count_%s_in'%protocol, None )
 	out_chain = chains.pop( 'count_%s_out'%protocol, None )
 	
@@ -142,16 +141,14 @@ def print_traffic( ports, protocol, ip_version, chains ):
 			in_bytes = in_chain.get_bytes( 'dpt:%s'%port, ip_version, protocol )
 			if in_bytes != None:
 				print( '%sin.value %s'%(prefix, in_bytes) )
-				printed_traffic += in_bytes
 				in_total += in_bytes
 		if out_chain:
 			out_bytes = out_chain.get_bytes( 'spt:%s'%port, ip_version, protocol )
 			if out_bytes != None:
 				print( '%sout.value %s'%(prefix, out_bytes) )
-				printed_traffic += out_bytes
 				out_total += out_bytes
 
-	return printed_traffic
+	return in_total, out_total
 
 def print_traffic_config( ports, protocol, ip_version, chains ):
 	in_chain = chains.pop( 'count_%s_in'%protocol, None )
@@ -223,16 +220,27 @@ graph_args -l 0"""%(title) )
 if use_v6:
 	v6_chains = parse_tables( 'ip6tables' )
 	if use_tcp:
-		v6_total += print_traffic( ports, 'tcp', 'ipv6', v6_chains )
+		i, o = print_traffic( ports, 'tcp', 'ipv6', v6_chains )
+		v6_total += i + o
+		in_total += i
+		out_total += o
 	if use_udp:
-		v6_total += print_traffic( ports, 'udp', 'ipv6', v6_chains )
+		i, o = print_traffic( ports, 'udp', 'ipv6', v6_chains )
+		v6_total += i + o
+		in_total += i
+		out_total += o
 if use_v4:
 	v4_chains = parse_tables( 'iptables' )
 	if use_tcp:
-		v4_total += print_traffic( ports, 'tcp', 'ipv4', v4_chains )
+		i, o = print_traffic( ports, 'tcp', 'ipv4', v4_chains )
+		v4_total += i + o
+		in_total += i
+		out_total += o
 	if use_udp:
-		v4_total += print_traffic( ports, 'udp', 'ipv4', v4_chains )
-
+		i, o = print_traffic( ports, 'udp', 'ipv4', v4_chains )
+		v4_total += i + o
+		in_total += i
+		out_total += o
 
 if use_v4 and use_v6:
 	print( 'total_ipv4.value %s'%v4_total )
