@@ -128,6 +128,8 @@ def parse_tables( binary ):
 
 v6_total = 0
 v4_total = 0
+in_total = 0
+out_total = 0
 
 def print_traffic( ports, protocol, ip_version, chains ):
 	printed_traffic = 0
@@ -141,11 +143,13 @@ def print_traffic( ports, protocol, ip_version, chains ):
 			if in_bytes != None:
 				print( '%sin.value %s'%(prefix, in_bytes) )
 				printed_traffic += in_bytes
+				in_total += in_bytes
 		if out_chain:
 			out_bytes = out_chain.get_bytes( 'spt:%s'%port, ip_version, protocol )
 			if out_bytes != None:
 				print( '%sout.value %s'%(prefix, out_bytes) )
 				printed_traffic += out_bytes
+				out_total += out_bytes
 
 	return printed_traffic
 
@@ -199,6 +203,13 @@ graph_args -l 0"""%(title) )
 		print( 'total_ipv6.label Total traffic via IPv6' )
 		print( 'total_ipv6.type DERIVE' )
 		print( 'total_ipv6.min 0' )
+	if len( ports ) > 1:
+		print( 'total_in.label Total incoming traffic' )
+		print( 'total_in.type DERIVE' )
+		print( 'total_in.min 0' )
+		print( 'total_out.label Total outgoing traffic' )
+		print( 'total_out.type DERIVE' )
+		print( 'total_out.min 0' )
 
 	print( 'total.label Total traffic' )
 	print( 'total.type DERIVE' )
@@ -224,5 +235,10 @@ if use_v4:
 if use_v4 and use_v6 and len( ports ) > 1:
 	print( 'total_ipv4.value %s'%v4_total )
 	print( 'total_ipv6.value %s'%v6_total )
+
+if len( ports ) > 1:
+	print( 'total_in.value %s'%in_total )
+	print( 'total_out.value %s'%out_total )
+
 total = v4_total + v6_total
 print( 'total.value %s'%total )
