@@ -1,6 +1,57 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+# This plugin monitors average traffic for one or more ports. It supports IPv4,
+# IPv6, TCP and UDP. The plugin assumes iptables and ip6tables chains identical
+# to those created by our fw-rules script[1]. See below on how to create those
+# chains manually.
+#
+#
+# CONFIGURATION
+#
+# This example configuration monitors port 80 and 443 on tcp and both IPv4 and
+# IPv6:
+# 	[traffic_http]
+#	env.ports 80 443
+#	env.title http(s)
+#	env.udp n
+#	env.tcp y
+#	env.ipv4 y
+#	env.ipv6 y
+#
+# 'y' is always the default, so you can just exclude what you don't like. This
+# is identical to the above example:
+# 	[traffic_http]
+#	env.ports 80 443
+#	env.title http(s)
+#	env.udp n
+#
+# Note again that the appropriate firewall rules *must* be present, otherwise
+# they are silently ignored. If, with the above example, port 80 is not counted
+# in the appropriate chains, it will not show up in the output.
+#
+#
+# CREATING IPTABLES RULES MANUALLY
+#
+# If you don't want to use fw-rules[1], you can always create the appropriate
+# chains manually. The chains follow the naming scheme:
+#	COUNT_<proto>_<dir>
+#
+# so if you want to count TCP packets, add these firewall rules to the bottom of
+# your firewall script:
+#	iptables --new-chain COUNT_TCP_IN
+#	iptables -I INPUT -p tcp -j COUNT_TCP_IN -i eth0
+#	iptables --new-chain COUNT_TCP_OUT
+#	iptables -I OUTPUT -p tcp -j COUNT_TCP_OUT -o eth0
+#
+# Then you must add a rule for each port you want to monitor:
+#	iptables -A COUNT_TCP_IN -p tcp --dport 80
+#	iptables -A COUNT_TCP_OUT -p tcp --sport 80
+#
+# The same rules also work with ip6tables.
+#
+# [1] http://git.fsinf.at/fsinf/fw-rules/
+#
 #%# family=manual
 #%# capabilities=
 
@@ -8,6 +59,7 @@ import sys, os
 
 if len( sys.argv ) > 1 and sys.argv[1] == 'autoconf':
 	print( 'no' )
+	sys.exit(0)
 
 def get_bool( val ):
 	if val.lower() in [ 'n', 'no', 'false' ]:
@@ -29,6 +81,11 @@ class chain():
 		self.rules.append( dict( zip( self.names, fields ) ) )
 
 	def get_bytes( self, destination, ip_version, protocol ):
+		"""
+		Get bytes on a specific destination. Due to disambiguities in
+		iptables output, we have to prepend the protocol with ipversion
+		'ipv4'.
+		"""
 		if ip_version == 'ipv4':
 			destination = '%s %s'%(protocol, destination)
 
@@ -43,6 +100,9 @@ use_v4 = get_bool( os.environ.pop( 'ipv4', 'y' ) )
 use_tcp = get_bool( os.environ.pop( 'tcp', 'y' ) )
 use_udp = get_bool( os.environ.pop( 'udp', 'y' ) )
 ports = os.environ.pop( 'ports', '' ).split()
+if not ports:
+	print( 'Error: You need to set env.ports' )
+	sys.exit(1)
 
 from subprocess import Popen, PIPE
 
