@@ -156,6 +156,10 @@ def print_traffic( ports, protocol, ip_version, chains ):
 def print_traffic_config( ports, protocol, ip_version, chains ):
 	in_chain = chains.pop( 'count_%s_in'%protocol, None )
 	out_chain = chains.pop( 'count_%s_out'%protocol, None )
+	if ip_version == 'ipv4':
+		info_proto = 'IPv4'
+	elif ip_version == 'ipv6':
+		info_proto = 'IPv6'
 	
 	for port in ports:
 		prefix = '%s_%s_%s_'%(protocol, port, ip_version)
@@ -163,14 +167,14 @@ def print_traffic_config( ports, protocol, ip_version, chains ):
 			in_bytes = in_chain.get_bytes( 'dpt:%s'%port, ip_version, protocol )
 			if in_bytes != None:
 				field = '%sin'%prefix
-				label = 'Port %s/tcp (incoming)'%port
+				label = 'Port %s/tcp (%s, incoming)'%(port, info_proto)
 				print( '%s.label %s'%(field, label) )
 				print( '%s.type DERIVE'%field )
 				print( '%s.min 0'%field )
 		if out_chain:
 			out_bytes = out_chain.get_bytes( 'spt:%s'%port, ip_version, protocol )
 			if out_bytes != None:
-				label = 'Port %s/tcp (outgoing)'%port
+				label = 'Port %s/tcp (%s, outgoing)'%(port, info_proto)
 				field = '%sout'%prefix
 				print( '%s.label %s'%(field, label) )
 				print( '%s.type DERIVE'%field )
@@ -230,8 +234,6 @@ if use_v4:
 		v4_total += print_traffic( ports, 'udp', 'ipv4', v4_chains )
 
 
-# 1. wert von jedem wert einzeln.
-# falls IPv6 UND IPv6: total fuer IP-version
 if use_v4 and use_v6 and len( ports ) > 1:
 	print( 'total_ipv4.value %s'%v4_total )
 	print( 'total_ipv6.value %s'%v6_total )
