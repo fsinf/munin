@@ -46,12 +46,15 @@ graph_vlabel Temperature in °C
 graph_scale no
 graph_info Monitor temperatures as captured by lm-sensors and SMART."""
 	for disc in discs:
+		if not os.path.exists( disc ):
+			print( "Warning: %s: No such disc."%disc )
+			continue
+
 		fieldname = sanitize_name( disc )
 		print( "%s.label %s" %(fieldname, disc) )
 		
 		p = Popen( ['hddtemp', disc], stdout=PIPE, stderr=PIPE )
-		(stdout, stderr) = p.communicate()
-		info = stdout.split( ': ' )[1]
+		info = p.communicate()[0].split( ':' )[1]
 
 		print( "%s.info %s" %(fieldname, info) )
 		
@@ -62,9 +65,13 @@ graph_info Monitor temperatures as captured by lm-sensors and SMART."""
 				print( "%s.%s %s" %(fieldname, limit, var) )
 else:
 	for disc in discs:
+		if not os.path.exists( disc ):
+			print( "Warning: %s: No such disc."%disc )
+			continue
+
 		fieldname = sanitize_name( disc )
 		p = Popen( ['hddtemp', disc], stdout=PIPE, stderr=PIPE )
-		(stdout, stderr) = p.communicate()
+		stdout = p.communicate()[0]
 		value = stdout.split( ': ' )[2].strip()[:-2]
 		print( "%s.value %s" %(fieldname, value) )
 		
