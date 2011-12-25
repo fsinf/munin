@@ -1,0 +1,14 @@
+Source: munin-fsinf-plugins
+Section: net
+Priority: optional
+Maintainer: Mathias Ertl <apt-repository@fsinf.at>
+Standards-Version: 3.9.2
+Build-Depends: debhelper (>= 8)
+Vcs-Browser: http://git.fsinf.at/fsinf/munin
+Vcs-Git: http://git.fsinf.at/fsinf/munin.git
+
+Package: munin-fsinf-plugins
+Architecture: all
+Depends: ${misc:Depends}
+Description: Munin plugins used by fsinf
+ This module provides some munin plugins used by fsinf.
