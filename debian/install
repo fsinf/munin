@@ -1,2 +1,2 @@
 [a-cez]* /usr/share/munin/plugins/fsinf
-d[^e]+ /usr/share/munin/plugins/fsinf
+d[a-df-z]* /usr/share/munin/plugins/fsinf
