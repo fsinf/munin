@@ -1,1 +1,3 @@
-* /usr/share/munin/plugins
+apt /usr/share/munin/plugins/fsinf
+ejabberd* /usr/share/munin/plugins/fsinf
+df* /usr/share/munin/plugins/fsinf
