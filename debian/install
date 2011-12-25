@@ -1,3 +1,2 @@
-apt /usr/share/munin/plugins/fsinf
-ejabberd* /usr/share/munin/plugins/fsinf
-df* /usr/share/munin/plugins/fsinf
+[a-cez]* /usr/share/munin/plugins/fsinf
+d[^e]* /usr/share/munin/plugins/fsinf
