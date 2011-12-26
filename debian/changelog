@@ -2,7 +2,7 @@ munin-fsinf-plugins (2011-12-26-1) oneiric; urgency=low
 
   * apt has update
 
- -- Mathias Ertl <apt-repository@fsinf.at>  Mon, 26 Dec 2011 02:14:312 +0000
+ -- Mathias Ertl <apt-repository@fsinf.at>  Mon, 26 Dec 2011 02:14:12 +0000
 
 munin-fsinf-plugins (2011-12-25-1) wheezy; urgency=low
 
