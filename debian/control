@@ -3,7 +3,7 @@ Section: net
 Priority: optional
 Maintainer: Mathias Ertl <apt-repository@fsinf.at>
 Standards-Version: 3.9.2
-Build-Depends: debhelper (>= 8)
+Build-Depends: debhelper (>= 7)
 Vcs-Browser: http://git.fsinf.at/fsinf/munin
 Vcs-Git: http://git.fsinf.at/fsinf/munin.git
 
