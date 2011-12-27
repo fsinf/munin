@@ -1,3 +1,0 @@
-[a-ce-z]* /usr/share/munin/plugins/fsinf
-d[a-df-z]* /usr/share/munin/plugins/fsinf
-debian/fsinf /etc/munin/plugin-conf.d/
