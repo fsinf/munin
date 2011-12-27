@@ -1,3 +1,10 @@
+munin-fsinf-plugins (2011-12-27-1) oneiric; urgency=low
+
+  * Add KSM plugin
+  * Add fsinf config-file
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Mon, 27 Dec 2011 12:25:33 +0000
+
 munin-fsinf-plugins (2011-12-26-1) oneiric; urgency=low
 
   * apt has update
