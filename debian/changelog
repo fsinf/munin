@@ -1,4 +1,4 @@
-munin-fsinf-plugins (2011-12-27-1) oneiric; urgency=low
+munin-fsinf-plugins (2011-12-27-2) oneiric; urgency=low
 
   * Allow the use of traffic_ as a non-wildcard plugin
 
