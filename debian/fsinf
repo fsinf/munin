@@ -10,5 +10,5 @@ group ejabberd
 user ejabberd
 group ejabberd
 
-[traffic_*]
+[traffic*]
 user root

@@ -1,5 +1,11 @@
 munin-fsinf-plugins (2011-12-27-1) oneiric; urgency=low
 
+  * Allow the use of traffic_ as a non-wildcard plugin
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Mon, 27 Dec 2011 13:45:21 +0000
+
+munin-fsinf-plugins (2011-12-27-1) oneiric; urgency=low
+
   * Add KSM plugin
   * Add fsinf config-file
 
