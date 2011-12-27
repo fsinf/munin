@@ -248,7 +248,9 @@ def print_traffic_config( ports, protocol, ip_version, chains ):
 
 if len( sys.argv ) > 1 and sys.argv[1] == 'config':
 	title = os.environ.pop( 'title', sys.argv[0].partition('_')[2] )
-	print( """graph_title Traffic via %s
+	if title:
+		title = ' via %s' % title
+	print( """graph_title Traffic%s
 graph_vlabel bytes/s
 graph_category network
 graph_args -l 0"""%(title) )
