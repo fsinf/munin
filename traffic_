@@ -188,24 +188,55 @@ def print_traffic_config( ports, protocol, ip_version, chains ):
 	elif ip_version == 'ipv6':
 		info_proto = 'IPv6'
 	
-	for port in ports:
-		prefix = '%s_%s_%s_'%(protocol, port, ip_version)
-		if in_chain:
-			in_bytes = in_chain.get_bytes( 'dpt:%s'%port, ip_version, protocol )
-			if in_bytes != None:
-				field = '%sin'%prefix
-				label = 'Port %s/tcp (%s, incoming)'%(port, info_proto)
-				print( '%s.label %s'%(field, label) )
-				print( '%s.type DERIVE'%field )
-				print( '%s.min 0'%field )
-		if out_chain:
-			out_bytes = out_chain.get_bytes( 'spt:%s'%port, ip_version, protocol )
-			if out_bytes != None:
-				label = 'Port %s/tcp (%s, outgoing)'%(port, info_proto)
-				field = '%sout'%prefix
-				print( '%s.label %s'%(field, label) )
-				print( '%s.type DERIVE'%field )
-				print( '%s.min 0'%field )
+	if ports:
+		for port in ports:
+			prefix = '%s_%s_%s_'%(protocol, port, ip_version)
+			if in_chain:
+				in_bytes = in_chain.get_bytes( 'dpt:%s'%port, ip_version, protocol )
+				if in_bytes != None:
+					field = '%sin'%prefix
+					label = 'Port %s/tcp (%s, incoming)'%(port, info_proto)
+					print( '%s.label %s'%(field, label) )
+					print( '%s.type DERIVE'%field )
+					print( '%s.min 0'%field )
+			if out_chain:
+				out_bytes = out_chain.get_bytes( 'spt:%s'%port, ip_version, protocol )
+				if out_bytes != None:
+					label = 'Port %s/tcp (%s, outgoing)'%(port, info_proto)
+					field = '%sout'%prefix
+					print( '%s.label %s'%(field, label) )
+					print( '%s.type DERIVE'%field )
+					print( '%s.min 0'%field )
+	else:
+		if use_tcp and use_v4:
+			print('tcp_ipv4_in.label TCP/IPv4 incoming')
+			print('tcp_ipv4_in.type DERIVE')
+			print('tcp_ipv4_in.min 0')
+			print('tcp_ipv4_out.label TCP/IPv4 outgoing')
+			print('tcp_ipv4_out.type DERIVE')
+			print('tcp_ipv4_out.min 0')
+		if use_tcp and use_v6:
+			print('tcp_ipv6_in.label TCP/IPv6 incoming')
+			print('tcp_ipv6_in.type DERIVE')
+			print('tcp_ipv6_in.min 0')
+			print('tcp_ipv6_out.label TCP/IPv6 outgoing')
+			print('tcp_ipv6_out.type DERIVE')
+			print('tcp_ipv6_out.min 0')
+		if use_udp and use_v4:
+			print('udp_ipv4_in.label UDP/IPv4 incoming')
+			print('udp_ipv4_in.type DERIVE')
+			print('udp_ipv4_in.min 0')
+			print('udp_ipv4_out.label UDP/IPv4 outgoing')
+			print('udp_ipv4_out.type DERIVE')
+			print('udp_ipv4_out.min 0')
+		if use_udp and use_v6:
+			print('udp_ipv6_in.label UDP/IPv6 incoming')
+			print('udp_ipv6_in.type DERIVE')
+			print('udp_ipv6_in.min 0')
+			print('udp_ipv6_out.label UDP/IPv6 outgoing')
+			print('udp_ipv6_out.type DERIVE')
+			print('udp_ipv6_out.min 0')
+		
 
 
 if len( sys.argv ) > 1 and sys.argv[1] == 'config':
