@@ -93,16 +93,27 @@ class chain():
 			if rule['destination'] == destination:
 				return int(rule['bytes'])
 		return None
+	def get_bytes_new(self, ip_version, target=None, destination=None):
+		for rule in self.rules:
+			if target and rule['target'] != target:
+				continue
+			if destination and rule['destination'] != destination:
+				continue
+			return int(rule['bytes'])
+		return -1
 
 # see what we want to count:
 use_v6 = get_bool( os.environ.pop( 'ipv6', 'y' ) )
 use_v4 = get_bool( os.environ.pop( 'ipv4', 'y' ) )
 use_tcp = get_bool( os.environ.pop( 'tcp', 'y' ) )
 use_udp = get_bool( os.environ.pop( 'udp', 'y' ) )
-ports = os.environ.pop( 'ports', '' ).split()
-if not ports:
-	print( 'Error: You need to set env.ports' )
-	sys.exit(1)
+if '_' not in sys.argv[0]:
+	ports = []
+else:
+	ports = os.environ.pop( 'ports', '' ).split()
+	if not ports:
+		print( 'Error: You need to set env.ports' )
+		sys.exit(1)
 
 from subprocess import Popen, PIPE
 
@@ -134,23 +145,40 @@ out_total = 0
 def print_traffic( ports, protocol, ip_version, chains ):
 	printed_in = 0
 	printed_out = 0
-	in_chain = chains.pop( 'count_%s_in'%protocol, None )
-	out_chain = chains.pop( 'count_%s_out'%protocol, None )
-	
-	for port in ports:
-		prefix = '%s_%s_%s_'%(protocol, port, ip_version)
-		if in_chain:
-			in_bytes = in_chain.get_bytes( 'dpt:%s'%port, ip_version, protocol )
-			if in_bytes != None:
-				print( '%sin.value %s'%(prefix, in_bytes) )
-				printed_in += in_bytes
-		if out_chain:
-			out_bytes = out_chain.get_bytes( 'spt:%s'%port, ip_version, protocol )
-			if out_bytes != None:
-				print( '%sout.value %s'%(prefix, out_bytes) )
-				printed_out += out_bytes
 
-	return printed_in, printed_out
+	if ports:
+		in_chain = chains.pop( 'count_%s_in'%protocol, None )
+		out_chain = chains.pop( 'count_%s_out'%protocol, None )
+	
+		for port in ports:
+			prefix = '%s_%s_%s_'%(protocol, port, ip_version)
+			if in_chain:
+				in_bytes = in_chain.get_bytes( 'dpt:%s'%port, ip_version, protocol )
+				if in_bytes != None:
+					print( '%sin.value %s'%(prefix, in_bytes) )
+					printed_in += in_bytes
+			if out_chain:
+				out_bytes = out_chain.get_bytes( 'spt:%s'%port, ip_version, protocol )
+				if out_bytes != None:
+					print( '%sout.value %s'%(prefix, out_bytes) )
+					printed_out += out_bytes
+
+		return printed_in, printed_out
+	else:
+		in_chain = chains['input']
+		out_chain = chains['output']
+
+		prefix = '%s_%s' % (protocol, ip_version)
+		target_in = 'count_%s_in' % protocol
+		target_out = 'count_%s_out' % protocol
+		
+		in_bytes = in_chain.get_bytes_new(ip_version, target=target_in)
+		out_bytes = out_chain.get_bytes_new(ip_version, target=target_out)
+
+		print('%s_in.value %s' %(prefix, in_bytes))
+		print('%s_out.value %s' %(prefix, out_bytes))
+
+		return in_bytes, out_bytes
 
 def print_traffic_config( ports, protocol, ip_version, chains ):
 	in_chain = chains.pop( 'count_%s_in'%protocol, None )
