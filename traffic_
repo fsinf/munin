@@ -30,6 +30,13 @@
 # they are silently ignored. If, with the above example, port 80 is not counted
 # in the appropriate chains, it will not show up in the output.
 #
+# 
+# USE AS NON-WILDCARD PLUGIN
+#
+# If you use this plugin as a normal non-wildcard plugin (that is, name the
+# symlink just 'traffic'), it will print the counters for the count-chains
+# as a whole.
+#
 #
 # CREATING IPTABLES RULES MANUALLY
 #
