@@ -1,3 +1,9 @@
+munin-fsinf-plugins (2012-21-01-1) oneiric; urgency=low
+
+  * Remove 'update' functionality from apt plugin.
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Sat, 21 Jan 2011 22:54:23 +0000
+
 munin-fsinf-plugins (2011-12-27-2) oneiric; urgency=low
 
   * Allow the use of traffic_ as a non-wildcard plugin
