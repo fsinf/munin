@@ -22,11 +22,6 @@
 #
 # 	config   (required)
 # 	autoconf (optional - used by munin-config)
-#	update <maxinterval> <probability>
-#		Updates the APT database randomly, guaranteeing there
-#		won't be more than <maxinterval> seconds between each
-#		update.  Otherwise, there is a a 1 in <probability>
-#		chance that an update will occur.
 #
 # $Log$
 # Revision 1.5  2010/04/03 12:26:00  Mati
@@ -67,27 +62,6 @@ $ENV{'LANG'}="C";
 $ENV{'LC_ALL'}="C";
 my $statefile = "/var/lib/munin/plugin-state/plugin-apt.state";
 
-sub update_state() {
-	if(-l $statefile) {
-		die("$statefile is a symbolic link, refusing to touch it.");
-	}
-	open(STATE, ">$statefile")
-		or die("Couldn't open state file $statefile for writing.");
-	print STATE "Last update: " . localtime() . "\n";
-	close(STATE);
-}
-
-sub update_helpandexit() {
-	print("apt update <maxinterval> <probability> -- update apt databases randomly\n\n",
-	      " maxinterval:\n",
-	      "  Enforce the updating of the apt database if it has\n",
-	      "  been more than (maxinterval many seconds since the last update.\n\n",
-	      " probability:\n",
-	      "  There's a 1 in (probability) chance that the database\n",
-	      "  will be updated.\n");
-	exit(1);
-}
-
 if ($ARGV[0] and $ARGV[0] eq "autoconf")
 {
 	`apt-get -v >/dev/null 2>/dev/null`;
@@ -111,34 +85,6 @@ if ($ARGV[0] and $ARGV[0] eq "config")
         print "pending.critical :0.5 \n";
         print "hold.label hold\n";
         exit 0;
-}
-
-if ($ARGV[0] and $ARGV[0] eq "update")
-{
-	my $maxinterval = $ARGV[1] ? $ARGV[1] : update_helpandexit;
-	my $probability = $ARGV[2] ? $ARGV[2] : update_helpandexit;
-	
-	# if it's been $probability seconds since the last update, do
-	# it now.
-	if(-e $statefile &&
-	   (stat($statefile))[10] + $maxinterval < time()) {
-		update_state();
-		exec("/usr/bin/apt-get update")
-			or die("Unable to exec() apt-get");
-	}
-
-	# if the state-file doesn't exist, create it.
-	if(!-e $statefile) {
-		update_state();
-	}
-
-	# update the database if the 1 in $probability check hits.
-	if(!int(rand($probability))) {
-		update_state();
-		exec("/usr/bin/apt-get update")
-			or die("Unable to exec() apt-get");
-	}
-	exit(0);
 }
 
 open (APT, "apt-get -u dist-upgrade --print-uris --yes |") or exit 22;
