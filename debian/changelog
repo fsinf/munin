@@ -1,4 +1,10 @@
-munin-fsinf-plugins (2012-21-01-1) oneiric; urgency=low
+munin-fsinf-plugins (2012-02-29-1) oneiric; urgency=low
+
+  * add the ejabberd_c2s_type plugin
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Sat, 29 Feb 2012 10:58:31 +0000
+
+munin-fsinf-plugins (2012-01-21-1) oneiric; urgency=low
 
   * Remove 'update' functionality from apt plugin.
 
