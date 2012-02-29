@@ -1,0 +1,56 @@
+#!/usr/bin/python3
+#
+#%# family=auto
+#%# capabilities=autoconf
+
+import sys, subprocess
+
+if 'autoconf' in sys.argv:
+    if os.path.exists( ksmdir ):
+        print( 'yes' )
+    else:
+        print( 'no (%s not found)'%ksmdir )
+    sys.exit(0)
+elif 'config' in sys.argv:
+    print("""graph_title Ejabberd connection types
+graph_args --base 1000 -l 0
+graph_category ejabberd
+graph_info used connection features
+total.label total
+total.graph no
+tls.label TLS
+ssl.label SSL
+ipv4.label IPv4
+ipv6.label IPv6
+compressed.label compression""")
+    sys.exit(0)
+
+p = subprocess.Popen(['ejabberdctl', 'connected_users_info'], stdout=subprocess.PIPE)
+stdout = p.communicate()[0].decode('utf-8').strip().split("\n")
+
+total = len(stdout)
+ipv4 = 0
+ipv6 = 0
+compressed = 0
+tls = 0
+ssl = 0
+
+for line in stdout:
+    jid, conn, ip, port, priority, node, uptime = line.split("\t")
+    if 'tls' in conn:
+        tls += 1
+    elif 'ssl' in conn:
+        ssl += 1
+    if 'compressed' in conn:
+        compressed += 1
+    if ip.startswith('::FFFF:'):
+        ipv4 += 1
+    else:
+        ipv6 += 1
+
+print("""total.value %s
+tls.value %s
+ssl.value %s
+compressed.value %s
+ipv4.value %s
+ipv6.value %s""" % (total, tls, ssl, compressed, ipv4, ipv6))
