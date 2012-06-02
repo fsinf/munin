@@ -169,7 +169,7 @@ def print_traffic( ports, protocol, ip_version, chains ):
 				if out_bytes != None:
 					print( '%sout.value %s'%(prefix, out_bytes) )
 					printed_out += out_bytes
-		
+
 		return printed_in, printed_out
 	else:
 		in_chain = chains['input']
