@@ -1,6 +1,8 @@
 munin-fsinf-plugins (2012-06-18-1) precise; urgency=low
 
   * Add postinst to restart munin-node upon upgrade
+  * Correctly tag master branch, so we no longer need
+    upstream-tree=branch option in debian/gbp.conf
 
  -- Mathias Ertl <apt-repository@fsinf.at>  Mon, 18 Jun 2012 11:30:12 +0200
 
