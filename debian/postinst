@@ -1,0 +1,13 @@
+#!/bin/sh
+
+set -e
+
+case "$1" in
+    configure)
+        echo -n "Restarting munin-node.."
+        invoke-rc.d munin-node restart
+        ;;
+esac
+
+#DEBHELPER#
+

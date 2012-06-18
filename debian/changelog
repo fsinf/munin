@@ -1,4 +1,10 @@
-munin-fsinf-plugins (2012-02-29-2) testing; urgency=low
+munin-fsinf-plugins (2012-06-18-1) precise; urgency=low
+
+  * Add postinst to restart munin-node upon upgrade
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Mon, 18 Jun 2012 11:30:12 +0200
+
+munin-fsinf-plugins (2012-02-29-2) oneiric; urgency=low
 
   * Add repository-wide gbp.conf
   * Append distribtution to debian revision
