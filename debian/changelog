@@ -1,6 +1,6 @@
 munin-fsinf-plugins (2012-07-01-1) precise; urgency=low
 
-  * Various improvements to the temp plugin
+  * Various improvements to the temp and fan plugin
 
  -- Mathias Ertl <apt-repository@fsinf.at>  Sun, 01 Jul 2012 01:15:05 +0200
 
