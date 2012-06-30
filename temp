@@ -26,8 +26,8 @@
 #
 # Changelog:
 #
-# 2012-06-30
-# * Add ability to override label
+# 2012-07-01
+# * Add ability to override label via env variable
 # * No longer limit length of field names
 #
 #%# family=auto
@@ -41,7 +41,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'autoconf':
 	We support autoconf. Please see:
 		http://munin.projects.linpro.no/wiki/ConcisePlugins#autoconf
 	"""
-	p = Popen([ 'which', 'sensors' ], stdout=PIPE)
+	p = Popen(['which', 'sensors'], stdout=PIPE)
 	p.communicate()
 	if p.returncode == 0:
 		print('yes')
@@ -53,12 +53,12 @@ if len(sys.argv) > 1 and sys.argv[1] == 'autoconf':
 def sanitize_name(string):
 	for regexp in ['^[^A-Za-z_]', '[^A-Za-z0-9_]']:
 		string = re.compile(regexp).sub('_', string)
-	return string
+	return string.lower()
 
 discs = os.environ.get('discs', '').split()
 
 config = False
-if len( sys.argv ) > 1 and sys.argv[1] == 'config':
+if len(sys.argv) > 1 and sys.argv[1] == 'config':
 	"""
 	Print the config-header. Note that field labels are printed in the loop
 	below.
@@ -71,19 +71,19 @@ graph_vlabel Temperature in °C
 graph_scale no
 graph_info Monitor temperatures as captured by lm-sensors and SMART."""
 	for disc in discs:
-		if not os.path.exists( disc ):
-			print( "Warning: %s: No such disc."%disc )
+		if not os.path.exists(disc):
+			print("Warning: %s: No such disc." % disc)
 			continue
 
-		fieldname = sanitize_name( disc )
-		print( "%s.label %s" %(fieldname, disc) )
+		fieldname = sanitize_name(disc)
+		print("%s.label %s" % (fieldname, disc))
 		
-		p = Popen( ['hddtemp', disc], stdout=PIPE, stderr=PIPE )
-		info = p.communicate()[0].split( ':' )[1]
+		p = Popen(['hddtemp', disc], stdout=PIPE, stderr=PIPE)
+		info = p.communicate()[0].split(':')[1]
 
-		print( "%s.info %s" %(fieldname, info) )
+		print("%s.info %s" % (fieldname, info))
 		
-		for limit in [ 'warning', 'critical' ]:
+		for limit in ['warning', 'critical']:
 			"""get additional info from environment variables"""
 			var = os.environ.get( "%s_%s" %(fieldname, limit) )
 			if var:
@@ -107,7 +107,6 @@ retval =  p.returncode
 # Various fields may be excluded with the "ignore" environment variable.
 ignores = os.environ.get('ignore', '').split()
 
-
 for line in stdout.split("\n"):
 	"""
 	Actually print the fields
@@ -121,7 +120,7 @@ for line in stdout.split("\n"):
 		continue
 	
 	label, rest = line.split(':', 1)
-	fieldname = sanitize_name( "%s_%s" %(chip, label) )
+	fieldname = sanitize_name("%s_%s" % (chip, label))
 	
 	if fieldname in ignores: # field is ignored
 		continue
@@ -132,9 +131,9 @@ for line in stdout.split("\n"):
 
 		# Get additional field values:
 		for limit in ['warning', 'critical', 'info']:
-			var = os.environ.get( "%s_%s" %(fieldname, limit) )
+			var = os.environ.get("%s_%s" % (fieldname, limit), '')
 			if var:
-				print( "%s.%s %s" %(fieldname, limit, var) )
+				print("%s.%s %s" % (fieldname, limit, var))
 	else:
 		value = rest.strip().split()[0]
-		print( "%s.value %s" %(fieldname, value) )
+		print("%s.value %s" % (fieldname, value))
