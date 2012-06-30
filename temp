@@ -5,6 +5,18 @@
 #
 # Author: Mathias Ertl <mati@fsinf.at>
 #
+# Configuration
+#
+# [temp]
+# user root
+# env.discs /dev/sda /dev/sdb
+# env.coretemp_isa_0000_core_0_label CPU0/Core0
+# env.coretemp_isa_0000_core_0_info Interesting sensor
+# env.coretemp_isa_0000_core_0_warning 30:50
+# env.coretemp_isa_0000_core_0_critical 25:55
+# env.coretemp_isa_0000_core_0_critical 25:55
+# env.ignore adt7470-i2c-0-2e i5k_amb-isa-0000_ch__1_dimm_9
+#
 # Changelog:
 #
 # 2012-06-30
