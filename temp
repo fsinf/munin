@@ -9,13 +9,20 @@
 #
 # [temp]
 # user root
+#
+# # these harddiscs will be monitored using hddtemp:
 # env.discs /dev/sda /dev/sdb
+#
+# # Configure verious values for the "Core 0" value on the
+# # coretemp-isa-0000 chip:
 # env.coretemp_isa_0000_core_0_label CPU0/Core0
 # env.coretemp_isa_0000_core_0_info Interesting sensor
 # env.coretemp_isa_0000_core_0_warning 30:50
 # env.coretemp_isa_0000_core_0_critical 25:55
 # env.coretemp_isa_0000_core_0_critical 25:55
-# env.ignore adt7470-i2c-0-2e i5k_amb-isa-0000_ch__1_dimm_9
+#
+# # Ignore a chip and an individual value:
+# env.ignore adt7470_i2c_0_2e i5k_amb_isa_0000_ch__1_dimm_9
 #
 # Changelog:
 #
