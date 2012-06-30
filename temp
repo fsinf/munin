@@ -125,12 +125,12 @@ for line in stdout.split( "\n" ):
 	if line.find( ' C' ) == -1:
 		"""Not a temperature"""
 		continue
-
+	
 	label, rest = line.split(':', 1)
 	fieldname = sanitize_name( "%s_%s" %(chip, label) )
 	label = os.environ.get('%s_label' % fieldname, label)
 	
-	if fieldname in ignores:
+	if fieldname in ignores or chip in ignores:
 		continue
 
 	if config:
