@@ -1,3 +1,9 @@
+munin-fsinf-plugins (2012-07-01-1) precise; urgency=low
+
+  * Various improvements to the temp plugin
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Sun, 01 Jul 2012 01:15:05 +0200
+
 munin-fsinf-plugins (2012-06-18-1) precise; urgency=low
 
   * Add postinst to restart munin-node upon upgrade
