@@ -5,6 +5,12 @@
 #
 # Author: Mathias Ertl <mati@fsinf.at>
 #
+# Changelog:
+#
+# 2012-06-30
+# * Add ability to override label
+# * No longer limit length of field names
+#
 #%# family=auto
 #%# capabilities=autoconf
 
@@ -28,7 +34,7 @@ if len( sys.argv ) > 1 and sys.argv[1] == 'autoconf':
 def sanitize_name( string ):
 	for regexp in [ '^[^A-Za-z_]', '[^A-Za-z0-9_]' ]:
 		string = re.compile( regexp ).sub( '_', string )
-	return string[-19:]
+	return string
 
 discs = os.environ.get( 'discs', '' ).split()
 
@@ -103,6 +109,7 @@ for line in stdout.split( "\n" ):
 
 	label, rest = line.split(':', 1)
 	fieldname = sanitize_name( "%s_%s" %(chip, label) )
+	label = os.environ.get('%s_label' % fieldname, label)
 	
 	if fieldname in ignores:
 		continue
