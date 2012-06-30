@@ -5,32 +5,57 @@
 #
 # Author: Mathias Ertl <mati@fsinf.at>
 #
+# Configuration
+#
+# [temp]
+# user root
+#
+# # these harddiscs will be monitored using hddtemp:
+# env.discs /dev/sda /dev/sdb
+#
+# # Configure verious values for the "Core 0" value on the
+# # coretemp-isa-0000 chip:
+# env.coretemp_isa_0000_core_0_label CPU0/Core0
+# env.coretemp_isa_0000_core_0_info Interesting sensor
+# env.coretemp_isa_0000_core_0_warning 30:50
+# env.coretemp_isa_0000_core_0_critical 25:55
+# env.coretemp_isa_0000_core_0_critical 25:55
+#
+# # Ignore a chip and an individual value:
+# env.ignore adt7470_i2c_0_2e i5k_amb_isa_0000_ch__1_dimm_9
+#
+# Changelog:
+#
+# 2012-06-30
+# * Add ability to override label
+# * No longer limit length of field names
+#
 #%# family=auto
 #%# capabilities=autoconf
 
 from subprocess import *
 import re, sys, os
 
-if len( sys.argv ) > 1 and sys.argv[1] == 'autoconf':
+if len(sys.argv) > 1 and sys.argv[1] == 'autoconf':
 	"""
 	We support autoconf. Please see:
 		http://munin.projects.linpro.no/wiki/ConcisePlugins#autoconf
 	"""
-	p = Popen( [ 'which', 'sensors' ], stdout=PIPE )
+	p = Popen([ 'which', 'sensors' ], stdout=PIPE)
 	p.communicate()
 	if p.returncode == 0:
-		print( 'yes' )
+		print('yes')
 		sys.exit(0)
 	else:
-		print( 'no (sensors not found)')
+		print('no (sensors not found)')
 		sys.exit(1)
 
-def sanitize_name( string ):
-	for regexp in [ '^[^A-Za-z_]', '[^A-Za-z0-9_]' ]:
-		string = re.compile( regexp ).sub( '_', string )
-	return string[-19:]
+def sanitize_name(string):
+	for regexp in ['^[^A-Za-z_]', '[^A-Za-z0-9_]']:
+		string = re.compile(regexp).sub('_', string)
+	return string
 
-discs = os.environ.get( 'discs', '' ).split()
+discs = os.environ.get('discs', '').split()
 
 config = False
 if len( sys.argv ) > 1 and sys.argv[1] == 'config':
@@ -75,42 +100,38 @@ else:
 		value = stdout.split( ': ' )[2].strip()[:-2]
 		print( "%s.value %s" %(fieldname, value) )
 		
-p = Popen( [ 'sensors' ], stdout=PIPE, stderr=PIPE )
-(stdout, stderr) = p.communicate()
+p = Popen(['sensors'], stdout=PIPE, stderr=PIPE)
+stdout, stderr = p.communicate()
 retval =  p.returncode
 
 # Various fields may be excluded with the "ignore" environment variable.
-ignores = os.environ.get( 'ignore' )
-if ignores:
-	ignores = ignores.split()
-else:
-	ignores = []
+ignores = os.environ.get('ignore', '').split()
 
 
-for line in stdout.split( "\n" ):
+for line in stdout.split("\n"):
 	"""
 	Actually print the fields
 	"""
-
-	if len( line ) > 1 and line.find( ':' ) == -1:
-		"""This is a chip"""
+	if not line.strip(): # filter empty lines
+		continue
+	if ':' not in line: # "detected" a chip
 		chip = line
 		continue
-
-	if line.find( ' C' ) == -1:
-		"""Not a temperature"""
+	if ' C' not in line or chip in ignores:
 		continue
-
+	
 	label, rest = line.split(':', 1)
 	fieldname = sanitize_name( "%s_%s" %(chip, label) )
 	
-	if fieldname in ignores:
+	if fieldname in ignores: # field is ignored
 		continue
 
 	if config:
-		print( "%s.label %s" %(fieldname, label) )
-		for limit in [ 'warning', 'critical', 'info' ]:
-			"""get additional info from environment variables"""
+		label = os.environ.get('%s_label' % fieldname, label)
+		print("%s.label %s" % (fieldname, label))
+
+		# Get additional field values:
+		for limit in ['warning', 'critical', 'info']:
 			var = os.environ.get( "%s_%s" %(fieldname, limit) )
 			if var:
 				print( "%s.%s %s" %(fieldname, limit, var) )
