@@ -1,3 +1,9 @@
+munin-fsinf-plugins (2013-08-27-1) unstable; urgency=low
+
+  * pep8 cleanup in all plugins written in Python.
+
+ -- Mathias Ertl <apt-repository@fsinf.at>  Tue, 27 Aug 2013 14:04:40 +0200
+
 munin-fsinf-plugins (2012-07-01-1) precise; urgency=low
 
   * Various improvements to the temp and fan plugin
