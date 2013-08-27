@@ -3,13 +3,11 @@
 #%# family=auto
 #%# capabilities=autoconf
 
-import sys, subprocess
+import subprocess
+import sys
 
 if 'autoconf' in sys.argv:
-    if os.path.exists( ksmdir ):
-        print( 'yes' )
-    else:
-        print( 'no (%s not found)'%ksmdir )
+    print('yes')
     sys.exit(0)
 elif 'config' in sys.argv:
     print("""graph_title Ejabberd connection types
@@ -25,7 +23,8 @@ ipv6.label IPv6
 compressed.label compression""")
     sys.exit(0)
 
-p = subprocess.Popen(['ejabberdctl', 'connected_users_info'], stdout=subprocess.PIPE)
+p = subprocess.Popen(['ejabberdctl', 'connected_users_info'],
+                     stdout=subprocess.PIPE)
 stdout = p.communicate()[0].decode('utf-8').strip().split("\n")
 
 total = len(stdout)

@@ -3,26 +3,27 @@
 #%# family=auto
 #%# capabilities=autoconf
 
-import os, sys
+import os
+import sys
 
 ksmdir = '/sys/kernel/mm/ksm/'
 
 if 'autoconf' in sys.argv:
-	if os.path.exists( ksmdir ):
-		print( 'yes' )
-	else:
-		print( 'no (%s not found)'%ksmdir )
+    if os.path.exists(ksmdir):
+        print('yes')
+    else:
+        print('no (%s not found)' % ksmdir)
 elif 'config' in sys.argv:
-	print( """graph_title Kernel shared memory
+    print("""graph_title Kernel shared memory
 graph_category system
 graph_info kernel shared memory
 shared.label shared
 sharing.label sharing
 unshared.label unshared
-volatile.label volatile""" )
+volatile.label volatile""")
 else:
-	os.chdir( ksmdir )
-	print( 'shared.value %s'%open('pages_shared').read().strip() )
-	print( 'sharing.value %s'%open('pages_sharing').read().strip() )
-	print( 'unshared.value %s'%open('pages_unshared').read().strip() )
-	print( 'volatile.value %s'%open('pages_volatile').read().strip() )
+    os.chdir(ksmdir)
+    print('shared.value %s' % open('pages_shared').read().strip())
+    print('sharing.value %s' % open('pages_sharing').read().strip())
+    print('unshared.value %s' % open('pages_unshared').read().strip())
+    print('volatile.value %s' % open('pages_volatile').read().strip())
