@@ -55,6 +55,7 @@ for line in stdout:
 print("""total.value %s
 tls.value %s
 ssl.value %s
+unencrypted.value %s
 compressed.value %s
 unencrypted.value %s
 ipv4.value %s
