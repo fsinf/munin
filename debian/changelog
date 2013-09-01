@@ -1,3 +1,9 @@
+munin-fsinf-plugins (2013-09-01+1-1) unstable; urgency=low
+
+  * Fix output-order in ejabberd_c2s_types.
+
+ -- Mathias Ertl <mati@fsinf.at>  Sun, 01 Sep 2013 14:24:36 +0200
+
 munin-fsinf-plugins (2013-09-01-1) unstable; urgency=low
 
   * ejabberd_c2s_types now outputs plain connections.
