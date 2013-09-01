@@ -2,6 +2,7 @@ munin-fsinf-plugins (2013-09-01-1) unstable; urgency=low
 
   * ejabberd_c2s_types now outputs plain connections.
   * Use new maintainer address.
+  * Use compat-level 9.
 
  -- Mathias Ertl <mati@fsinf.at>  Sun, 01 Sep 2013 14:03:18 +0200
 
