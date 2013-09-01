@@ -57,6 +57,5 @@ tls.value %s
 ssl.value %s
 unencrypted.value %s
 compressed.value %s
-unencrypted.value %s
 ipv4.value %s
 ipv6.value %s""" % (total, tls, ssl, plain, compressed, ipv4, ipv6))
