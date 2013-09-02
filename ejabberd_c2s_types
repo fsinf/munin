@@ -14,11 +14,12 @@ elif 'config' in sys.argv:
 graph_args --base 1000 -l 0
 graph_category ejabberd
 graph_info used connection features
+graph_vlabel users
 total.label total
 total.graph no
 tls.label TLS
 ssl.label SSL
-plain.label Unencrypted
+unencrypted.label Unencrypted
 ipv4.label IPv4
 ipv6.label IPv6
 compressed.label compression""")
@@ -34,7 +35,7 @@ ipv6 = 0
 compressed = 0
 tls = 0
 ssl = 0
-plain = 0
+unenc = 0
 
 for line in stdout:
     jid, conn, ip, port, priority, node, uptime = line.split("\t")
@@ -43,7 +44,7 @@ for line in stdout:
     elif 'ssl' in conn:
         ssl += 1
     else:
-        plain += 1
+        unenc += 1
 
     if 'compressed' in conn:
         compressed += 1
@@ -58,4 +59,4 @@ ssl.value %s
 unencrypted.value %s
 compressed.value %s
 ipv4.value %s
-ipv6.value %s""" % (total, tls, ssl, plain, compressed, ipv4, ipv6))
+ipv6.value %s""" % (total, tls, ssl, unenc, compressed, ipv4, ipv6))
