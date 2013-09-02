@@ -1,0 +1,8 @@
+munin-fsinf-plugins: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/ejabberd_availability
+munin-fsinf-plugins: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/ejabberd_c2s_types
+munin-fsinf-plugins: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/fans
+munin-fsinf-plugins: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/ksm
+munin-fsinf-plugins: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/mdadm_monitor
+munin-fsinf-plugins: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/temp
+munin-fsinf-plugins: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/traffic_
+munin-fsinf-plugins: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/voltages

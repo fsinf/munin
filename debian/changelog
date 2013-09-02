@@ -2,6 +2,7 @@ munin-fsinf-plugins (2013-09-02-1) unstable; urgency=low
 
   * ejabberd_c2s_types: fix drawing of unencrypted connections.
   * Fix wrong values in debian/copyright.
+  * Add lintian overrides for python dependencies.
 
  -- Mathias Ertl <mati@fsinf.at>  Mon, 02 Sep 2013 11:15:36 +0200
 
