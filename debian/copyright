@@ -1,7 +1,7 @@
 Format: http://anonscm.debian.org/viewvc/dep/web/deps/dep5.mdwn?revision=173&view=markup
-Upstream-Name: restauth-common
+Upstream-Name: munin-fsinf
 Upstream-Contact: Mathias Ertl <mati@fsinf.at>
-Source: https://common.fsinf.at
+Source: https://git.fsinf.at/fsinf/munin
 
 Files: *
 Copyright: Copyright (c) 2011, Mathias Ertl <mati@fsinf.at>
