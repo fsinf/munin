@@ -212,7 +212,7 @@ def print_traffic_config(ports, protocol, ip_version, chains):
                     'dpt:%s' % port, ip_version, protocol)
                 if in_bytes != None:
                     field = '%sin' % prefix
-                    label = 'Port %s/tcp (%s, incoming)' % (port, info_proto)
+                    label = 'Port %s/%s (%s, incoming)' % (port, protocol, info_proto)
                     print('%s.label %s' % (field, label))
                     print('%s.type DERIVE' % field)
                     print('%s.min 0' % field)
@@ -220,7 +220,7 @@ def print_traffic_config(ports, protocol, ip_version, chains):
                 out_bytes = out_chain.get_bytes(
                     'spt:%s' % port, ip_version, protocol)
                 if out_bytes != None:
-                    label = 'Port %s/tcp (%s, outgoing)' % (port, info_proto)
+                    label = 'Port %s/%s (%s, outgoing)' % (port, protocol, info_proto)
                     field = '%sout' % prefix
                     print('%s.label %s' % (field, label))
                     print('%s.type DERIVE' % field)
