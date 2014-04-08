@@ -1,3 +1,9 @@
+munin-fsinf-plugins (2014-04-00-1) unstable; urgency=low
+
+  * critical level for apt-packages is now 20.
+
+ -- Mathias Ertl <mati@fsinf.at>  Wed, 09 Apr 2014 00:00:55 +0200
+
 munin-fsinf-plugins (2013-09-02+1-1) unstable; urgency=low
 
   * ejabberd_c2s_types: fix drawing of unencrypted connections.
