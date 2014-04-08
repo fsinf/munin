@@ -24,6 +24,9 @@
 # 	autoconf (optional - used by munin-config)
 #
 # $Log$
+# Revision 1.6  2013/04/08 23:57:12  Mati
+# critical is now at 20 by default
+#
 # Revision 1.5  2010/04/03 12:26:00  Mati
 # remove graph=no, replaced warning with critical range
 #
@@ -82,7 +85,7 @@ if ($ARGV[0] and $ARGV[0] eq "config")
 
         print "graph_title Pending packages\n";
         print "pending.label pending\n";
-        print "pending.critical :0.5 \n";
+        print "pending.critical :20 \n";
         print "hold.label hold\n";
         exit 0;
 }
