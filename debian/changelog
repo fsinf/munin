@@ -1,3 +1,9 @@
+munin-plugins-fsinf (2014-04-14-2) unstable; urgency=low
+
+  * Rename config file name (packages conflict otherwise).
+
+ -- Mathias Ertl <mati@fsinf.at>  Mon, 14 Apr 2014 22:29:33 +0200
+
 munin-plugins-fsinf (2014-04-14-1) unstable; urgency=low
 
   * Add the spectrum2_ plugin.
