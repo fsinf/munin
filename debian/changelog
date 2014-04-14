@@ -1,3 +1,10 @@
+munin-plugins-fsinf (2014-04-14-1) unstable; urgency=low
+
+  * Add the spectrum2_ plugin.
+  * Rename package to munin-plugins-fsinf.
+
+ -- Mathias Ertl <mati@fsinf.at>  Mon, 14 Apr 2014 20:59:09 +0200
+
 munin-fsinf-plugins (2014-04-09-1) unstable; urgency=low
 
   * critical level for apt-packages is now 20.

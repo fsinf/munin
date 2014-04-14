@@ -1,13 +1,19 @@
-Source: munin-fsinf-plugins
+Source: munin-plugins-fsinf
 Section: net
 Priority: optional
 Maintainer: Mathias Ertl <mati@fsinf.at>
 Standards-Version: 3.9.2
 Build-Depends: debhelper (>= 9)
-Vcs-Browser: http://git.fsinf.at/fsinf/munin
-Vcs-Git: http://git.fsinf.at/fsinf/munin.git
+Vcs-Browser: https://github.com/fsinf/munin
+Vcs-Git: https://github.com/fsinf/munin.git
 
 Package: munin-fsinf-plugins
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}, munin-plugins-fsinf
+Description: Munin plugins used by fsinf (transitional package)
+ Old and incorrect package name used until 2014-04-14.
+
+Package: munin-plugins-fsinf
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}
 Description: Munin plugins used by fsinf
