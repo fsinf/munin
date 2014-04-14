@@ -9,10 +9,11 @@ Vcs-Git: https://github.com/fsinf/munin.git
 
 Package: munin-fsinf-plugins
 Architecture: all
-Priority: oldlibs/extra
+Package: oldlibs
 Depends: ${misc:Depends}, ${python:Depends}, munin-plugins-fsinf
-Description: Munin plugins used by fsinf (old package name)
- Old and incorrect package name used until 2014-04-14.
+Description: Munin plugins used by fsinf (transitional package)
+ Old and incorrect package name used until 2014-04-14. Use munin-plugins-fsinf
+ instead.
 
 Package: munin-plugins-fsinf
 Architecture: all
