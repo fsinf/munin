@@ -6,3 +6,4 @@ munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsi
 munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/temp
 munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/traffic_
 munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/voltages
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/spectrum2_
