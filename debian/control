@@ -11,13 +11,16 @@ Package: munin-fsinf-plugins
 Architecture: all
 Priority: extra
 Section: oldlibs
-Depends: ${misc:Depends}, ${python:Depends}, munin-plugins-fsinf
+Depends: ${misc:Depends}, ${python:Depends},
+ munin-plugins-fsinf (>= 2014-04-15-1)
 Description: Munin plugins used by fsinf (transitional package)
  Old and incorrect package name used until 2014-04-14. Use munin-plugins-fsinf
  instead.
 
 Package: munin-plugins-fsinf
 Architecture: all
+Replaces: munin-fsinf-plugins (<< 2014-04-15-1)
+Breaks: munin-fsinf-plugins (<< 2014-04-15-1)
 Depends: ${misc:Depends}, ${python:Depends}
 Description: Munin plugins used by fsinf
  This module provides some munin plugins used by fsinf.
