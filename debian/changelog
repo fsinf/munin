@@ -1,3 +1,9 @@
+munin-plugins-fsinf (2014-04-15-1) unstable; urgency=low
+
+  * Rename config file back, try to solve conflict.
+
+ -- Mathias Ertl <mati@fsinf.at>  Tue, 15 Apr 2014 09:42:37 +0200
+
 munin-plugins-fsinf (2014-04-14-2) unstable; urgency=low
 
   * Rename config file name (packages conflict otherwise).
