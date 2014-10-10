@@ -4,7 +4,14 @@
 #%# capabilities=autoconf
 
 import subprocess
+import os
 import sys
+
+enable_ssl = os.environ.get('enable_ssl', 'y')
+if enable_ssl.strip().lower() == 'n':
+    enable_ssl = True
+else:
+    enable_ssl = False
 
 if 'autoconf' in sys.argv:
     print('yes')
@@ -18,11 +25,12 @@ graph_vlabel users
 total.label total
 total.graph no
 tls.label TLS
-ssl.label SSL
 unencrypted.label Unencrypted
 ipv4.label IPv4
 ipv6.label IPv6
 compressed.label compression""")
+    if enable_ssl is True:
+        print('ssl.label SSL')
     sys.exit(0)
 
 p = subprocess.Popen(['ejabberdctl', 'connected_users_info'],
@@ -55,8 +63,10 @@ for line in stdout:
 
 print("""total.value %s
 tls.value %s
-ssl.value %s
 unencrypted.value %s
 compressed.value %s
 ipv4.value %s
-ipv6.value %s""" % (total, tls, ssl, unenc, compressed, ipv4, ipv6))
+ipv6.value %s""" % (total, tls, unenc, compressed, ipv4, ipv6))
+
+if enable_ssl is True:
+    print('ssl.value %s' % ssl)
