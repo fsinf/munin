@@ -28,6 +28,8 @@ tls.label TLS
 unencrypted.label Unencrypted
 ipv4.label IPv4
 ipv6.label IPv6
+http_bind.label HTTP Binding
+unknown.label Unknown
 compressed.label compression""")
     if enable_ssl is True:
         print('ssl.label SSL')
@@ -43,6 +45,8 @@ ipv6 = 0
 compressed = 0
 tls = 0
 ssl = 0
+http_bind = 0
+unknown = 0
 unenc = 0
 
 for line in stdout:
@@ -51,11 +55,16 @@ for line in stdout:
         tls += 1
     elif 'ssl' in conn:
         ssl += 1
+    elif conn == 'http_bind':
+        http_bind += 1
+    elif conn == 'unknown':
+        unknown += 1
     else:
         unenc += 1
 
     if 'compressed' in conn:
         compressed += 1
+
     if ip.startswith('::FFFF:'):
         ipv4 += 1
     else:
@@ -66,7 +75,10 @@ tls.value %s
 unencrypted.value %s
 compressed.value %s
 ipv4.value %s
-ipv6.value %s""" % (total, tls, unenc, compressed, ipv4, ipv6))
+ipv6.value %s
+http_bind.value %s
+unknown.value %s
+""" % (total, tls, unenc, compressed, ipv4, ipv6, http_bind, unknown))
 
 if enable_ssl is True:
     print('ssl.value %s' % ssl)
