@@ -1,6 +1,7 @@
 munin-plugins-fsinf (2014-09-13-1) unstable; urgency=low
 
   * Update ejabberd_c2s_types plugin.
+  * Remove old munin-fsinf-plugins binary package.
 
  -- Mathias Ertl <mati@fsinf.at>  Mon, 13 Oct 2014 09:17:30 +0200
 
