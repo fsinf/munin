@@ -4,14 +4,7 @@
 #%# capabilities=autoconf
 
 import subprocess
-import os
 import sys
-
-enable_ssl = os.environ.get('enable_ssl', 'y')
-if enable_ssl.strip().lower() == 'n':
-    enable_ssl = True
-else:
-    enable_ssl = False
 
 if 'autoconf' in sys.argv:
     print('yes')
@@ -71,9 +64,11 @@ for line in stdout:
 
 print("""total.value %s
 tls.value %s
+ssl.value %s
 unencrypted.value %s
 compressed.value %s
 ipv4.value %s
 ipv6.value %s
 http_bind.value %s
-unknown.value %s""" % (total, tls, ssl, unenc, compressed, ipv4, ipv6, http_bind, unknown))
+unknown.value %s
+""" % (total, tls, ssl, unenc, compressed, ipv4, ipv6, http_bind, unknown))
