@@ -1,3 +1,10 @@
+munin-plugins-fsinf (2014-10-30-1) unstable; urgency=low
+
+  * Update ejabberd_c2s_types again.
+  * Update muc_count to support multiple vhosts.
+
+ -- Mathias Ertl <mati@fsinf.at>  Thu, 30 Oct 2014 19:03:27 +0100
+
 munin-plugins-fsinf (2014-09-13-1) unstable; urgency=low
 
   * Update ejabberd_c2s_types plugin.
