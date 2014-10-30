@@ -4,14 +4,7 @@
 #%# capabilities=autoconf
 
 import subprocess
-import os
 import sys
-
-enable_ssl = os.environ.get('enable_ssl', 'y')
-if enable_ssl.strip().lower() == 'n':
-    enable_ssl = True
-else:
-    enable_ssl = False
 
 if 'autoconf' in sys.argv:
     print('yes')
@@ -22,6 +15,7 @@ graph_args --base 1000 -l 0
 graph_category ejabberd
 graph_info used connection features
 graph_vlabel users
+graph_scale no
 total.label total
 total.graph no
 tls.label TLS
@@ -30,13 +24,11 @@ ipv4.label IPv4
 ipv6.label IPv6
 http_bind.label HTTP Binding
 unknown.label Unknown
-compressed.label compression""")
-    if enable_ssl is True:
-        print('ssl.label SSL')
+compressed.label compression
+ssl.label SSL""")
     sys.exit(0)
 
-p = subprocess.Popen(['ejabberdctl', 'connected_users_info'],
-                     stdout=subprocess.PIPE)
+p = subprocess.Popen(['ejabberdctl', 'connected_users_info'], stdout=subprocess.PIPE)
 stdout = p.communicate()[0].decode('utf-8').strip().split("\n")
 
 total = len(stdout)
@@ -50,7 +42,7 @@ unknown = 0
 unenc = 0
 
 for line in stdout:
-    jid, conn, ip, port, priority, node, uptime = line.split("\t")
+    jid, conn, ip, _ = line.split("\t", 3)
     if 'tls' in conn:
         tls += 1
     elif 'ssl' in conn:
@@ -72,13 +64,11 @@ for line in stdout:
 
 print("""total.value %s
 tls.value %s
+ssl.value %s
 unencrypted.value %s
 compressed.value %s
 ipv4.value %s
 ipv6.value %s
 http_bind.value %s
 unknown.value %s
-""" % (total, tls, unenc, compressed, ipv4, ipv6, http_bind, unknown))
-
-if enable_ssl is True:
-    print('ssl.value %s' % ssl)
+""" % (total, tls, ssl, unenc, compressed, ipv4, ipv6, http_bind, unknown))
