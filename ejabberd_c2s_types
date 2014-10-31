@@ -70,5 +70,4 @@ compressed.value %s
 ipv4.value %s
 ipv6.value %s
 http_bind.value %s
-unknown.value %s
-""" % (total, tls, ssl, unenc, compressed, ipv4, ipv6, http_bind, unknown))
+unknown.value %s""" % (total, tls, ssl, unenc, compressed, ipv4, ipv6, http_bind, unknown))
