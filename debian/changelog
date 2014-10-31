@@ -2,6 +2,7 @@ munin-plugins-fsinf (2014-10-31-1) unstable; urgency=low
 
   * fix labels in muc_count, add info field, remove old "no" field.
   * fix stray newline in ejabberd_c2s_types.
+  * Add lintian override for missing python helper.
 
  -- Mathias Ertl <mati@fsinf.at>  Fri, 31 Oct 2014 09:40:55 +0100
 
