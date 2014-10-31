@@ -1,3 +1,10 @@
+munin-plugins-fsinf (2014-10-31-1) unstable; urgency=low
+
+  * fix labels in muc_count, add info field, remove old "no" field.
+  * fix stray newline in ejabberd_c2s_types.
+
+ -- Mathias Ertl <mati@fsinf.at>  Fri Oct 31 09:39:16 CET 2014
+
 munin-plugins-fsinf (2014-10-30-1) unstable; urgency=low
 
   * Update ejabberd_c2s_types again.
