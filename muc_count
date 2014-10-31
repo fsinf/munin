@@ -51,6 +51,7 @@ graph_category MUC'
     for host in $hosts; do
         label=`clean_name $host`
         echo $label.label $host
+        echo $label.info Number of MUCs on $host
     done
 
 	exit 0
