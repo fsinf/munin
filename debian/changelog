@@ -1,3 +1,9 @@
+munin-plugins-fsinf (2014-11-01-1) unstable; urgency=low
+
+  * Add ejabberd_active_users plugin.
+
+ -- Mathias Ertl <mati@fsinf.at>  Sat, 01 Nov 2014 18:15:14 +0100
+
 munin-plugins-fsinf (2014-10-31-1) unstable; urgency=low
 
   * fix labels in muc_count, add info field, remove old "no" field.
