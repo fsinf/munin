@@ -1,6 +1,12 @@
+munin-plugins-fsinf (2014-11-02-1) unstable; urgency=low
+
+  * Small updates to the ejabberd_active_users_ plugin.
+
+ -- Mathias Ertl <mati@fsinf.at>  Sun, 02 Nov 2014 10:07:46 +0100
+
 munin-plugins-fsinf (2014-11-01-1) unstable; urgency=low
 
-  * Add ejabberd_active_users plugin.
+  * Add ejabberd_active_users_ plugin.
 
  -- Mathias Ertl <mati@fsinf.at>  Sat, 01 Nov 2014 18:15:14 +0100
 
