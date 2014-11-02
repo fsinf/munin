@@ -54,10 +54,11 @@ clean_name() {
 
 
 if [ "$1" = "config" ]; then
-    echo 'graph_title Number of active users in the last $days days
+    echo "graph_title Number of active users in the last $days days
 graph_args --base 1000 -l 0
 graph_vlabel users
-graph_category ejabberd'
+graph_scale no
+graph_category ejabberd"
 
     for host in $hosts; do
         label=`clean_name $host`
