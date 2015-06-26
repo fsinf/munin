@@ -1,6 +1,7 @@
 munin-plugins-fsinf (2015-06-26-1) unstable; urgency=low
 
   * Add rocheck plugin to check for read-only mounted filesystems.
+  * traffic_: Add '-w' option to iptables to avoid locking issues.
 
  -- Mathias Ertl <mati@fsinf.at>  Fri, 26 Jun 2015 15:04:57 +0200
 
