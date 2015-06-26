@@ -130,7 +130,7 @@ from subprocess import Popen, PIPE
 
 
 def parse_tables(binary):
-    p = Popen([binary, '-L', '-n', '-v', '-x'], stdout=PIPE)
+    p = Popen([binary, '-L', '-w', '-n', '-v', '-x'], stdout=PIPE)
     stdout = p.communicate()[0].splitlines()
 
     chains = {}
