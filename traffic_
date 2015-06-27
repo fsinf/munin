@@ -118,6 +118,7 @@ use_v6 = get_bool(os.environ.pop('ipv6', 'y'))
 use_v4 = get_bool(os.environ.pop('ipv4', 'y'))
 use_tcp = get_bool(os.environ.pop('tcp', 'y'))
 use_udp = get_bool(os.environ.pop('udp', 'y'))
+maximum = int(os.environ.get('max', '1073741824'))
 if '_' not in sys.argv[0]:
     ports = []
 else:
@@ -198,6 +199,14 @@ def print_traffic(ports, protocol, ip_version, chains):
         return in_bytes, out_bytes
 
 
+def config(field, label):
+    print('''%s.label %s
+%s.type DERIVE
+%s.min 0''' % (field, label, field, field))
+    if maximum:
+        print('%s.max %s' % (field, maximum))
+
+
 def print_traffic_config(ports, protocol, ip_version, chains):
     in_chain = chains.pop('count_%s_in' % protocol, None)
     out_chain = chains.pop('count_%s_out' % protocol, None)
@@ -215,47 +224,27 @@ def print_traffic_config(ports, protocol, ip_version, chains):
                 if in_bytes != None:
                     field = '%sin' % prefix
                     label = 'Port %s/%s (%s, incoming)' % (port, protocol, info_proto)
-                    print('%s.label %s' % (field, label))
-                    print('%s.type DERIVE' % field)
-                    print('%s.min 0' % field)
+                    config(field, label)
             if out_chain:
                 out_bytes = out_chain.get_bytes(
                     'spt:%s' % port, ip_version, protocol)
                 if out_bytes != None:
-                    label = 'Port %s/%s (%s, outgoing)' % (port, protocol, info_proto)
                     field = '%sout' % prefix
-                    print('%s.label %s' % (field, label))
-                    print('%s.type DERIVE' % field)
-                    print('%s.min 0' % field)
+                    label = 'Port %s/%s (%s, outgoing)' % (port, protocol, info_proto)
+                    config(field, label)
     else:
         if use_tcp and use_v4:
-            print('tcp_ipv4_in.label TCP/IPv4 incoming')
-            print('tcp_ipv4_in.type DERIVE')
-            print('tcp_ipv4_in.min 0')
-            print('tcp_ipv4_out.label TCP/IPv4 outgoing')
-            print('tcp_ipv4_out.type DERIVE')
-            print('tcp_ipv4_out.min 0')
+            config('tcp_ipv4_in', 'TCP/IPv4 incoming')
+            config('tcp_ipv4_out', 'TCP/IPv4 outgoing')
         if use_tcp and use_v6:
-            print('tcp_ipv6_in.label TCP/IPv6 incoming')
-            print('tcp_ipv6_in.type DERIVE')
-            print('tcp_ipv6_in.min 0')
-            print('tcp_ipv6_out.label TCP/IPv6 outgoing')
-            print('tcp_ipv6_out.type DERIVE')
-            print('tcp_ipv6_out.min 0')
+            config('tcp_ipv6_in', 'TCP/IPv6 incoming')
+            config('tcp_ipv6_out', 'TCP/IPv6 outgoing')
         if use_udp and use_v4:
-            print('udp_ipv4_in.label UDP/IPv4 incoming')
-            print('udp_ipv4_in.type DERIVE')
-            print('udp_ipv4_in.min 0')
-            print('udp_ipv4_out.label UDP/IPv4 outgoing')
-            print('udp_ipv4_out.type DERIVE')
-            print('udp_ipv4_out.min 0')
+            config('udp_ipv4_in', 'UDP/IPv4 incoming')
+            config('udp_ipv4_out', 'UDP/IPv4 outgoing')
         if use_udp and use_v6:
-            print('udp_ipv6_in.label UDP/IPv6 incoming')
-            print('udp_ipv6_in.type DERIVE')
-            print('udp_ipv6_in.min 0')
-            print('udp_ipv6_out.label UDP/IPv6 outgoing')
-            print('udp_ipv6_out.type DERIVE')
-            print('udp_ipv6_out.min 0')
+            config('udp_ipv6_in', 'UDP/IPv6 incoming')
+            config('udp_ipv6_out', 'UDP/IPv6 outgoing')
 
 
 if len(sys.argv) > 1 and sys.argv[1] == 'config':
@@ -280,23 +269,13 @@ graph_args -l 0""" % title)
             print_traffic_config(ports, 'udp', 'ipv4', v4_chains)
 
     if use_v4 and use_v6:
-        print('total_ipv4.label Total traffic via IPv4')
-        print('total_ipv4.type DERIVE')
-        print('total_ipv4.min 0')
-        print('total_ipv6.label Total traffic via IPv6')
-        print('total_ipv6.type DERIVE')
-        print('total_ipv6.min 0')
+        config('total_ipv4', 'Total traffic via IPv4')
+        config('total_ipv6', 'Total traffic via IPv6')
     if len(ports) > 1:
-        print('total_in.label Total incoming traffic')
-        print('total_in.type DERIVE')
-        print('total_in.min 0')
-        print('total_out.label Total outgoing traffic')
-        print('total_out.type DERIVE')
-        print('total_out.min 0')
+        config('total_in', 'Total incoming traffic')
+        config('total_out', 'Total outgoing traffic')
 
-    print('total.label Total traffic')
-    print('total.type DERIVE')
-    print('total.min 0')
+    config('total', 'Total traffic')
     sys.exit(0)
 
 if use_v6:
