@@ -1,3 +1,9 @@
+munin-plugins-fsinf (2015-06-27-1) unstable; urgency=low
+
+  * traffic_: Set 'max' field for all fields.
+
+ -- Mathias Ertl <mati@fsinf.at>  Sat, 27 Jun 2015 21:18:08 +0200
+
 munin-plugins-fsinf (2015-06-26-1) unstable; urgency=low
 
   * Add rocheck plugin to check for read-only mounted filesystems.
