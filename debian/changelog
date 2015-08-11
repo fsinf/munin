@@ -1,3 +1,9 @@
+munin-plugins-fsinf (2015-08-11-1) unstable; urgency=low
+
+  * rocheck: fix plugin *again*.
+
+ -- Mathias Ertl <mati@fsinf.at>  Tue, 11 Aug 2015 13:00:13 +0200
+
 munin-plugins-fsinf (2015-08-09-1) unstable; urgency=low
 
   * rocheck: fix exit status.
