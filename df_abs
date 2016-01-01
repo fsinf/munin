@@ -42,7 +42,7 @@
 # * Added EXCLUDE_MOUNTS and MOUNTPOINT_AS_LABEL parameters.
 # * Exclude devtmpfs (-> /dev) filesystems by default.
 #
-# Revision 2.0
+# Revision 2.0      2010-08-29 14:03:11  Mathias Ertl <mati@fsinf.at>
 # Added EXLCUDE_FS and EXCLUDE_TYPE paramaters
 #
 # Revision 1.2.2.1  2005/02/16 22:50:14  jimmyo
