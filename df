@@ -38,6 +38,10 @@
 #
 # $Log$
 #
+# Revision 2.1      2016/01/01 16:20
+# * Added EXCLUDE_MOUNTS and MOUNTPOINT_AS_LABEL parameters.
+# * Exclude deftmpfs (-> /dev) filesystems by default.
+#
 # Revision 2.0
 # Added EXLCUDE_FS and EXCLUDE_TYPE paramaters
 #
