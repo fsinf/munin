@@ -95,7 +95,12 @@ for fs in $EXCLUDE_FS; do
 done
 
 clean_name() {
-	echo $1 | sed 's/[\/.-]/_/g'
+    if [ "$(echo $1 | egrep -c "$MOUNTPOINT_AS_LABEL")" -eq "1" ]; then
+	    echo $7 | sed 's/[\/.-]/_/g'
+    else
+	    echo $1 | sed 's/[\/.-]/_/g'
+    fi
+    set +x
 }
 
 # Determine if a device should be excluded or not. Return 1 (true) if the device
