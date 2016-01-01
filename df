@@ -19,10 +19,11 @@
 #			  to exclude pseudo filesystems like /dev or /proc.
 #			  (default: "none" - which excludes most pseudo
 #				filesystems.)
-#   MOUNTPOINT_AS_LABEL - Regular expression matching (pseudo-)devices where
-#             the mount point should be used as label (instead of the device 
-#             path). Useful for pseudo-fileystems that don't have a real
-#             device (default: "(udev|tmpfs)").
+#   EXCLUDE_MOUNTS  - Exclude given mountpoints (default: 
+#             "^(/dev/shm|/sys/fs/cgroup)$").
+#   MOUNTPOINT_AS_LABEL - Filesystems where the mount point should be used as
+#             label (instead of the device path). Useful for pseudo-fileystems
+#             that don't have a real device (default: "^(udev|tmpfs)$").
 # Note that setting any of these settings *overrides* the default values and
 # does NOT *add* to them.
 #
@@ -86,9 +87,10 @@ if [ "$1" = "autoconf" ]; then
 	exit 0
 fi
 
+[ -z $EXCLUDE_MOUNTS ] && EXCLUDE_MOUNTS="^(/dev/shm|/sys/fs/cgroup)$"
 [ -z $EXCLUDE_DEVS ] && EXCLUDE_DEVS="none"
 [ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none devtmpfs"
-[ -z $MOUNTPOINT_AS_LABEL ] && MOUNTPOINT_AS_LABEL="(udev|tmpfs)"
+[ -z $MOUNTPOINT_AS_LABEL ] && MOUNTPOINT_AS_LABEL="^(udev|tmpfs)$"
 DF_PARAMS='-T -P -l'
 for fs in $EXCLUDE_FS; do
 	DF_PARAMS="$DF_PARAMS -x $fs"
@@ -104,13 +106,18 @@ clean_name() {
 }
 
 # Determine if a device should be excluded or not. Return 1 (true) if the device
-# name is listed in EXCLUDE_DEVS, 0 (false) otherwise.
+# name is listed in EXCLUDE_DEVS or the mount point is listed in EXCLUDE_MOUNTS, 
+# 0 (false) otherwise.
 exclude_dev() {
 	if [ "$(echo $EXCLUDE_DEVS | grep -c $1)" -eq "1" ]; then
-		return 1
-	else
-		return 0
+        return 1
+    else
+        if [ "$(echo $7 | egrep -c "$EXCLUDE_MOUNTS")" -eq "1" ]; then
+		    return 1
+        fi
+	    return 0
 	fi
+
 }
 
 if [ "$1" = "config" ]; then
