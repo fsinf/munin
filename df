@@ -12,7 +12,7 @@
 #
 # Configuration:
 #
-# This script supports three environment variables:
+# This script supports four environment variables:
 #	EXCLUDE_FS	- Exclude given filesystems
 #			  (default: iso9660, udf and none.)
 #	EXCLUDE_DEVS	- Exclude filesystems on given devices. This is useful
@@ -87,9 +87,9 @@ if [ "$1" = "autoconf" ]; then
 	exit 0
 fi
 
-[ -z $EXCLUDE_MOUNTS ] && EXCLUDE_MOUNTS="^(/dev/shm|/sys/fs/cgroup)$"
 [ -z $EXCLUDE_DEVS ] && EXCLUDE_DEVS="none"
 [ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none devtmpfs"
+[ -z $EXCLUDE_MOUNTS ] && EXCLUDE_MOUNTS="^(/dev/shm|/sys/fs/cgroup)$"
 [ -z $MOUNTPOINT_AS_LABEL ] && MOUNTPOINT_AS_LABEL="^(udev|tmpfs)$"
 DF_PARAMS='-T -P -l'
 for fs in $EXCLUDE_FS; do
@@ -102,7 +102,6 @@ clean_name() {
     else
 	    echo $1 | sed 's/[\/.-]/_/g'
     fi
-    set +x
 }
 
 # Determine if a device should be excluded or not. Return 1 (true) if the device
@@ -117,7 +116,6 @@ exclude_dev() {
         fi
 	    return 0
 	fi
-
 }
 
 if [ "$1" = "config" ]; then
