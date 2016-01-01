@@ -12,13 +12,17 @@
 #
 # Configuration:
 #
-# This script supports two environment variables:
+# This script supports three environment variables:
 #	EXCLUDE_FS	- Exclude given filesystems
 #			  (default: iso9660, udf and none.)
 #	EXCLUDE_DEVS	- Exclude filesystems on given devices. This is useful
 #			  to exclude pseudo filesystems like /dev or /proc.
 #			  (default: "none" - which excludes most pseudo
 #				filesystems.)
+#   MOUNTPOINT_AS_LABEL - Regular expression matching (pseudo-)devices where
+#             the mount point should be used as label (instead of the device 
+#             path). Useful for pseudo-fileystems that don't have a real
+#             device (default: "(udev|tmpfs)").
 # Note that setting any of these settings *overrides* the default values and
 # does NOT *add* to them.
 #
@@ -84,6 +88,7 @@ fi
 
 [ -z $EXCLUDE_DEVS ] && EXCLUDE_DEVS="none"
 [ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none devtmpfs"
+[ -z $MOUNTPOINT_AS_LABEL ] && MOUNTPOINT_AS_LABEL="(udev|tmpfs)"
 DF_PARAMS='-T -P -l'
 for fs in $EXCLUDE_FS; do
 	DF_PARAMS="$DF_PARAMS -x $fs"
