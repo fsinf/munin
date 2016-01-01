@@ -1,3 +1,12 @@
+munin-plugins-fsinf (2016-01-01-1) unstable; urgency=low
+
+  * Updates to the df and df_abs plugins:
+    * Exclude devtmpfs filesystem (/dev) by default.
+    * Add the MOUNTPOINTS_AS_LABEL option.
+    * Add the EXCLUDE_MOUNTS option.
+
+ -- Mathias Ertl <mati@fsinf.at>  Fri, 01 Jan 2016 15:45:09 +0100
+
 munin-plugins-fsinf (2015-08-11-1) unstable; urgency=low
 
   * rocheck: fix plugin *again*.
