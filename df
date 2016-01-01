@@ -12,13 +12,18 @@
 #
 # Configuration:
 #
-# This script supports two environment variables:
+# This script supports four environment variables:
 #	EXCLUDE_FS	- Exclude given filesystems
 #			  (default: iso9660, udf and none.)
 #	EXCLUDE_DEVS	- Exclude filesystems on given devices. This is useful
 #			  to exclude pseudo filesystems like /dev or /proc.
 #			  (default: "none" - which excludes most pseudo
 #				filesystems.)
+#   EXCLUDE_MOUNTS  - Exclude given mountpoints (default: 
+#             "^(/dev/shm|/sys/fs/cgroup)$").
+#   MOUNTPOINT_AS_LABEL - Filesystems where the mount point should be used as
+#             label (instead of the device path). Useful for pseudo-fileystems
+#             that don't have a real device (default: "^(udev|tmpfs)$").
 # Note that setting any of these settings *overrides* the default values and
 # does NOT *add* to them.
 #
@@ -33,7 +38,11 @@
 #
 # $Log$
 #
-# Revision 2.0
+# Revision 2.1      2016/01/01 16:20  Mathias Ertl <mati@fsinf.at>
+# * Added EXCLUDE_MOUNTS and MOUNTPOINT_AS_LABEL parameters.
+# * Exclude devtmpfs (-> /dev) filesystems by default.
+#
+# Revision 2.0      2010-08-29 14:03:11  Mathias Ertl <mati@fsinf.at>
 # Added EXLCUDE_FS and EXCLUDE_TYPE paramaters
 #
 # Revision 1.5.2.4  2005/03/12 21:35:07  jimmyo
@@ -83,23 +92,33 @@ if [ "$1" = "autoconf" ]; then
 fi
 
 [ -z $EXCLUDE_DEVS ] && EXCLUDE_DEVS="none"
-[ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none"
+[ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none devtmpfs"
+[ -z $EXCLUDE_MOUNTS ] && EXCLUDE_MOUNTS="^(/dev/shm|/sys/fs/cgroup)$"
+[ -z $MOUNTPOINT_AS_LABEL ] && MOUNTPOINT_AS_LABEL="^(udev|tmpfs)$"
 DF_PARAMS='-T -P -l'
 for fs in $EXCLUDE_FS; do
 	DF_PARAMS="$DF_PARAMS -x $fs"
 done
 
 clean_name() {
-	echo $1 | sed 's/[\/.-]/_/g'
+    if [ "$(echo $1 | egrep -c "$MOUNTPOINT_AS_LABEL")" -eq "1" ]; then
+	    echo $7 | sed 's/[\/.-]/_/g'
+    else
+	    echo $1 | sed 's/[\/.-]/_/g'
+    fi
 }
 
 # Determine if a device should be excluded or not. Return 1 (true) if the device
-# name is listed in EXCLUDE_DEVS, 0 (false) otherwise.
+# name is listed in EXCLUDE_DEVS or the mount point is listed in EXCLUDE_MOUNTS, 
+# 0 (false) otherwise.
 exclude_dev() {
 	if [ "$(echo $EXCLUDE_DEVS | grep -c $1)" -eq "1" ]; then
-		return 1
-	else
-		return 0
+        return 1
+    else
+        if [ "$(echo $7 | egrep -c "$EXCLUDE_MOUNTS")" -eq "1" ]; then
+		    return 1
+        fi
+	    return 0
 	fi
 }
 
