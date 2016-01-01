@@ -83,7 +83,7 @@ if [ "$1" = "autoconf" ]; then
 fi
 
 [ -z $EXCLUDE_DEVS ] && EXCLUDE_DEVS="none"
-[ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none"
+[ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none devtmpfs"
 DF_PARAMS='-T -P -l'
 for fs in $EXCLUDE_FS; do
 	DF_PARAMS="$DF_PARAMS -x $fs"
