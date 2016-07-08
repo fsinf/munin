@@ -1,3 +1,10 @@
+munin-plugins-fsinf (2016-07-08-1) unstable; urgency=low
+
+  * df and df_abs: Exclude /run/user/
+  * ejabberd_c2s_types: Add support for websockets.
+
+ -- Mathias Ertl <mati@fsinf.at>  Fri, 08 Jul 2016 19:02:45 +0200
+
 munin-plugins-fsinf (2016-01-01-1) unstable; urgency=low
 
   * Updates to the df and df_abs plugins:
