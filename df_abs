@@ -38,6 +38,10 @@
 #
 # $Log$
 #
+# Revision 2.1.2    2016/07/08 18:04  Mathias Ertl <mati@fsinf.at>
+# * Exclude /run/user/[0-9]+ tmpfs filesystems, their existance is dynamic
+#   and depends on who is currently logged in.
+#
 # Revision 2.1      2016/01/01 16:20  Mathias Ertl <mati@fsinf.at>
 # * Added EXCLUDE_MOUNTS and MOUNTPOINT_AS_LABEL parameters.
 # * Exclude devtmpfs (-> /dev) filesystems by default.
@@ -67,7 +71,7 @@ fi
 
 [ -z $EXCLUDE_DEVS ] && EXCLUDE_DEVS="none"
 [ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none devtmpfs"
-[ -z $EXCLUDE_MOUNTS ] && EXCLUDE_MOUNTS="^(/dev/shm|/sys/fs/cgroup)$"
+[ -z $EXCLUDE_MOUNTS ] && EXCLUDE_MOUNTS="^(/dev/shm|/sys/fs/cgroup|/run/user/[0-9]+)$"
 [ -z $MOUNTPOINT_AS_LABEL ] && MOUNTPOINT_AS_LABEL="^(udev|tmpfs)$"
 DF_PARAMS='-T -P -l'
 for fs in $EXCLUDE_FS; do
