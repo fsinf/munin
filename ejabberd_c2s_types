@@ -23,7 +23,7 @@ unencrypted.label Unencrypted
 ipv4.label IPv4
 ipv6.label IPv6
 http_bind.label HTTP Binding
-websocket.label = Websockets
+websockets.label Websockets
 unknown.label Unknown
 compressed.label compression
 ssl.label SSL""")
