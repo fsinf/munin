@@ -51,7 +51,7 @@ for line in stdout:
         ssl += 1
     elif conn == 'http_bind':
         http_bind += 1
-    elif conn == 'websockets':
+    elif conn == 'websocket':
         websockets += 1
     elif conn == 'unknown':
         unknown += 1
