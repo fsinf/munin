@@ -10,12 +10,12 @@ if [ "$1" = "autoconf" ]; then
 fi
 
 if [ "$1" = "config" ]; then
-        echo 'graph_title No of read-only filesystems'
+        echo 'graph_title Number of read-only filesystems'
         echo 'graph_args --base 1000 -l 0 '
         echo 'graph_scale no'
         echo 'graph_vlabel no'
         echo 'graph_category disk'
-        echo 'number.label uptime'
+        echo 'number.label count'
         echo 'number.critical :1'
         echo 'number.info Number of read-only filesystems.'
         exit 0
