@@ -5,6 +5,7 @@
 
 import subprocess
 import sys
+import ipaddr
 
 if 'autoconf' in sys.argv:
     print('yes')
@@ -61,7 +62,8 @@ for line in stdout:
     if 'compressed' in conn:
         compressed += 1
 
-    if ip.startswith('::FFFF:'):
+    addrx = ipaddr.IPAddress(ip)
+    if addrx.version == 4:
         ipv4 += 1
     else:
         ipv6 += 1
