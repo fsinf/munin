@@ -2,6 +2,7 @@ munin-plugins-fsinf (2017-07-31-1) unstable; urgency=low
 
   * ejabberd: Now a multigraph plugin that fetches all data via the HTTP API.
     The new plugin replaces all ejabberd_* plugins.
+  * df and df_abs: Exclude any filesystem under /run.
 
  -- Mathias Ertl <mati@fsinf.at>  Mon, 31 Jul 2017 17:49:44 +0200
 
