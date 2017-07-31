@@ -38,6 +38,9 @@
 #
 # $Log$
 #
+# Revision 2.1.3    2016/07/31 17:56  Mathias Ertl <mati@fsinf.at>
+# * Exclude any filesystem under /run.
+#
 # Revision 2.1.2    2016/07/08 18:04  Mathias Ertl <mati@fsinf.at>
 # * Exclude /run/user/[0-9]+ tmpfs filesystems, their existance is dynamic
 #   and depends on who is currently logged in.
@@ -97,7 +100,7 @@ fi
 
 [ -z $EXCLUDE_DEVS ] && EXCLUDE_DEVS="none"
 [ -z $EXCLUDE_FS ] && EXCLUDE_FS="iso9660 udf none devtmpfs"
-[ -z $EXCLUDE_MOUNTS ] && EXCLUDE_MOUNTS="^(/dev/shm|/sys/fs/cgroup|/run/user/[0-9]+)$"
+[ -z $EXCLUDE_MOUNTS ] && EXCLUDE_MOUNTS="^(/dev/shm|/sys/fs/cgroup|/run/?.*)$"
 [ -z $MOUNTPOINT_AS_LABEL ] && MOUNTPOINT_AS_LABEL="^(udev|tmpfs)$"
 DF_PARAMS='-T -P -l'
 for fs in $EXCLUDE_FS; do
