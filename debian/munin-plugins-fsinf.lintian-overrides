@@ -7,3 +7,13 @@ munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsi
 munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/traffic_
 munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/voltages
 munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/spectrum2_
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/ejabberd
+# new style
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/ejabberd #!/usr/bin/python3
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/fans #!/usr/bin/python
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/ksm #!/usr/bin/python
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/mdadm_monitor #!/usr/bin/python
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/temp #!/usr/bin/python
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/traffic_ #!python
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/voltages #!/usr/bin/python
+munin-plugins-fsinf: python-script-but-no-python-dep usr/share/munin/plugins/fsinf/spectrum2_ #!/usr/bin/python

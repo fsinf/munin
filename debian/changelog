@@ -1,3 +1,10 @@
+munin-plugins-fsinf (2019.11.16-1) unstable; urgency=medium
+
+  * remove rocheck, with new munin all filesystems are readonly
+  * cleanup debian build warnings and errors
+
+ -- David Kaufmann <astra@fsinf.at>  Sat, 16 Nov 2019 05:13:36 +0100
+
 munin-plugins-fsinf (2017-07-31-1) unstable; urgency=low
 
   * ejabberd: Now a multigraph plugin that fetches all data via the HTTP API.
