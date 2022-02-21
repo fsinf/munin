@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 
 #%# family=auto
 #%# capabilities=autoconf
@@ -23,7 +23,7 @@ unshared.label unshared
 volatile.label volatile""")
 else:
     os.chdir(ksmdir)
-    print('shared.value %s' % open('pages_shared').read().strip())
-    print('sharing.value %s' % open('pages_sharing').read().strip())
-    print('unshared.value %s' % open('pages_unshared').read().strip())
-    print('volatile.value %s' % open('pages_volatile').read().strip())
+    print('shared.value %s' % open('pages_shared', 'r').read().strip())
+    print('sharing.value %s' % open('pages_sharing', 'r').read().strip())
+    print('unshared.value %s' % open('pages_unshared', 'r').read().strip())
+    print('volatile.value %s' % open('pages_volatile', 'r').read().strip())

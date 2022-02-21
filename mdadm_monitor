@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 #
 # Script to monitor mdadm based RAID devices.
 #
@@ -39,7 +39,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'autoconf':
 if 'DEVICES' in os.environ:
     devs = os.environ['DEVICES'].split()
 else:
-    lines = open('/proc/mdstat').readlines()
+    lines = open('/proc/mdstat', 'r').readlines()
     devs = [line.split()[0] for line in lines if line.startswith('md')]
 
 
@@ -64,7 +64,7 @@ for dev in devs:
         print('%s.value -1' % dev)
         continue
 
-    p = Popen(['mdadm', '-D', device], stdout=PIPE, stderr=PIPE)
+    p = Popen(['mdadm', '-D', device], text=True, stdout=PIPE, stderr=PIPE)
     stdout, stderr = p.communicate()
 
     if p.returncode != 0:

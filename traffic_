@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # This plugin monitors average traffic for one or more ports. It supports IPv4,
@@ -131,7 +131,7 @@ from subprocess import Popen, PIPE
 
 
 def parse_tables(binary):
-    p = Popen([binary, '-L', '-w', '-n', '-v', '-x'], stdout=PIPE)
+    p = Popen([binary, '-L', '-w', '-n', '-v', '-x'], text=True, stdout=PIPE)
     stdout = p.communicate()[0].splitlines()
     if p.returncode != 0:
         return {}
