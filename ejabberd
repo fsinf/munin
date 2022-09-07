@@ -94,17 +94,16 @@ total.info Total registered users''')
         print('''vhost_{safe_host}.info Registered users on {host}
 vhost_{safe_host}.label Registered users on {host}'''.format(host=host, safe_host=safe_host))
 
-    for day in num_active_days:
-        print('''multigraph ejabberd_active_users_%s
-graph_title Number of active users in the last %s days
-graph_args --base 1000 -l 0
-graph_vlabel users
-graph_scale no
-graph_category ejabberd''' % (day, day))
-        for host, safe_host in safe_hosts:
-            print('''%s.label %s
-%s.info Number of active users on %s in the last %s days''' % (safe_host, host, safe_host, host, 
-    day))
+#    for day in num_active_days:
+#        print('''multigraph ejabberd_active_users_%s
+#graph_title Number of active users in the last %s days
+#graph_args --base 1000 -l 0
+#graph_vlabel users
+#graph_scale no
+#graph_category ejabberd''' % (day, day))
+#        for host, safe_host in safe_hosts:
+#            print('''%s.label %s
+#%s.info Number of active users on %s in the last %s days''' % (safe_host, host, safe_host, host, day))
 
     print('''multigraph muc_count
 graph_title Number of multi-user chats
@@ -188,15 +187,15 @@ websockets.value %s
 unknown.value %s""" % (cui_tls, cui_ssl, cui_unenc, cui_compressed, cui_ipv4, cui_ipv6, 
                        cui_http_bind, cui_websockets, cui_unknown))
 
-for day in num_active_days:
-    print('multigraph ejabberd_active_users_%s' % day)
-    for host, safe_host in safe_hosts:
-        val = post('num_active_users', {'host': host, 'days': int(day)}).json()['users']
-        print('%s.value %s' % (safe_host, val))
+#for day in num_active_days:
+#    print('multigraph ejabberd_active_users_%s' % day)
+#    for host, safe_host in safe_hosts:
+#        val = post('num_active_users', {'host': host, 'days': int(day)}).json()['users']
+#        print('%s.value %s' % (safe_host, val))
 
 print('multigraph muc_count')
 for host, safe_host in safe_hosts:
-    resp = post('muc_online_rooms', {'host': host})
+    resp = post('muc_online_rooms', {'service': 'conference.'+host})
     #print(resp.text)
     val = len(resp.json())
     print('%s.value %s' % (safe_host, val))

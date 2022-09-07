@@ -49,12 +49,12 @@ if len(sys.argv) > 1 and sys.argv[1] == 'config':
     below.
     """
     config = True
-    print """graph_category sensors
+    print ("""graph_category sensors
 graph_title Fan speeds
 graph_args --base 1000 -l 0
 graph_vlabel U/min
 graph_scale no
-graph_info Monitor fan-speed"""
+graph_info Monitor fan-speed""")
 
 p = Popen(['sensors'], text=True, stdout=PIPE, stderr=PIPE)
 stdout, stderr = p.communicate()

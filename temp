@@ -70,12 +70,12 @@ if len(sys.argv) > 1 and sys.argv[1] == 'config':
     below.
     """
     config = True
-    print """graph_category sensors
+    print ("""graph_category sensors
 graph_title Temperatures
 graph_args --base 1000 -l 0
 graph_vlabel Temperature in °C
 graph_scale no
-graph_info Monitor temperatures as captured by lm-sensors and SMART."""
+graph_info Monitor temperatures as captured by lm-sensors and SMART.""")
     for disc in discs:
         if not os.path.exists(disc):
             print("Warning: %s: No such disc." % disc)
